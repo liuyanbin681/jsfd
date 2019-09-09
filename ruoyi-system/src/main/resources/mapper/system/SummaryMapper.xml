@@ -43,6 +43,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertSummary" parameterType="Summary">
+     <selectKey keyProperty="sId" resultType="Integer" order="BEFORE">
+         select SEQ_SUMMARY.NEXTVAL as sId  from  DUAL
+     </selectKey>
         insert into Summary
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="sId != null  ">s_id,</if>

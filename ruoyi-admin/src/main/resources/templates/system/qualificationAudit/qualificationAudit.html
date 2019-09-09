@@ -90,29 +90,35 @@
 		        },
 				{
 					field : 'zzId', 
-					title : '资质审核id'
+					title : '资质审核id',
+					align:'center'
 				},
 				{
 					field : 'zzTitle',
-					title : '资质审核标题'
+					title : '资质审核标题',
+					align:'center'
 				},
 				{
 					field : 'zzFilename', 
-					title : '资质文件名称'
+					title : '资质文件名称',
+					visible: false
 				},
 				{
-						field : 'zzUserId',
-						title : '创建人',
-						sortable: true
+					field : 'zzUserId',
+					title : '创建人',
+					sortable: true,
+					align:'center'
 				},
 				{
 					field : 'zzCreatetime', 
 					title : '创建时间',
-					sortable: true
+					sortable: true,
+					align:'center'
 				},
 				{
 					field : 'zzRemarks', 
 					title : '资质审核备注',
+					align:'center',
 					formatter: function(value, row, index) {
 						return $.table.tooltip(value);
 					}
@@ -122,7 +128,9 @@
 		            align: 'center',
 		            formatter: function(value, row, index) {
 		            	var actions = [];
+/*
 		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.zzId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+*/
 		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="downloadFile(\'' + row.zzFilename + '\')"><i class="fa fa-edit"></i>下载</a> ');
                         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.zzId + '\')"><i class="fa fa-remove"></i>删除</a>');
 						return actions.join('');

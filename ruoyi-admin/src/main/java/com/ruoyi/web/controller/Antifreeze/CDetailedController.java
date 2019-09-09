@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.Antifreeze;
 
 import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.annotation.RepeatSubmit;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -105,6 +106,7 @@ public class CDetailedController extends BaseController
 	@Log(title = "厂商明细", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
+	@RepeatSubmit()
 	public AjaxResult addSave(CDetailed cDetailed)
 	{
 		cDetailed.setCjCreate(ShiroUtils.getSysUser().getUserName());//获取当前登陆人姓名

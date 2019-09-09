@@ -149,7 +149,6 @@ public class SummaryController extends BaseController
 		try {
 			String upload = FileUploadUtils.upload(uploadPath, file);
 			FileUrl=upload;
-			System.out.println(upload);
 			return success();
 		} catch (Exception e) {
 			e.printStackTrace();

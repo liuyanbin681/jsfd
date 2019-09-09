@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 /**
@@ -172,8 +173,8 @@ public class QualificationAuditController extends BaseController
 		String url="";
 		for (int i=0;i<split.length;i++){
 			System.out.println(split[i]);
-			url=split[0]+"/"+split[1]+"/"+split[2]+"/";
-			fileName=split[3];
+			url="/"+split[3]+"/"+split[4]+"/"+split[5]+"/";
+			fileName=split[6];
 
 		}
 		try
@@ -184,7 +185,7 @@ public class QualificationAuditController extends BaseController
 			}
 			String realFileName = System.currentTimeMillis() + fileName.substring(fileName.indexOf("_") + 1);
 			String filePath = Global.getUploadPath()+url + fileName;
-
+			System.out.println("返回的路径"+filePath);
 			response.setCharacterEncoding("utf-8");
 			response.setContentType("multipart/form-data");
 			response.setHeader("Content-Disposition",
