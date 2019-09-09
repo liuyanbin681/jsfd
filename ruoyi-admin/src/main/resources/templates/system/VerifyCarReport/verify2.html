@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('喷洒状态')" />
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeIn"  align="center">
+    <div class="row">
+        <div class="col-sm-12" align="center">
+            <input type="hidden" id="id" name="id" th:value="${id}"/>
+            <div class="tabs-container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"> 未喷洒</a>
+                    </li>
+                    <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">已喷洒</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane active">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">未喷洒：</label>
+                            <input type="radio" name="status" value="1" checked>
+                            <div class="col-sm-12 col-sm-offset-3">
+                                <button type="submit" class="btn btn-primary" onclick="Unsprayed()">提交</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="tab-2" class="tab-pane">
+                        <div class="container-div">
+                            <div class="row">
+                                <div class="col-sm-12 search-collapse">
+                                    <form id="formId">
+                                        <div class="select-list">
+                                            <ul>
+                                                <li>
+                                                    喷洒时间：<input type="text" name="sprayDatetime"/>
+                                                </li>
+
+                                                <li>
+                                                    <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </form>
+                                    <div class="col-sm-12 col-sm-offset-3">
+                                        <button type="submit" class="btn btn-primary" onclick="sprayed()">提交</button>
+                                    </div>
+                                </div>
+
+                                <div class="btn-group-sm" id="toolbar" role="group">
+                                    <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:sprayingOperation:add">
+                                        <i class="fa fa-plus"></i> 添加
+                                    </a>
+                                    <a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="system:sprayingOperation:edit">
+                                        <i class="fa fa-edit"></i> 修改
+                                    </a>
+                                    <a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:sprayingOperation:remove">
+                                        <i class="fa fa-remove"></i> 删除
+                                    </a>
+                                    <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:sprayingOperation:export">
+                                        <i class="fa fa-download"></i> 导出
+                                    </a>
+                                </div>
+                                <div class="col-sm-12 select-table table-striped">
+                                    <table id="bootstrap-table" data-mobile-responsive="true"></table>
+                                </div>
+                            </div>
+                        </div>
+                        <div th:include="include :: footer"></div>
+                        <script th:inline="javascript">
+                            var editFlag = [[${@permission.hasPermi('system:sprayingOperation:edit')}]];
+                            var removeFlag = [[${@permission.hasPermi('system:sprayingOperation:remove')}]];
+                            var types = [[${@dict.getType('pslxing')}]];
+                            var prefix = ctx + "system/sprayingOperation";
+                            const pre =ctx +"system/frozenCarReport";
+                            $(function() {
+                                var options = {
+                                    url: prefix + "/lists",
+                                    createUrl: prefix + "/add",
+                                    updateUrl: prefix + "/edit/{id}",
+                                    removeUrl: prefix + "/remove",
+                                    exportUrl: prefix + "/export",
+                                    modalName: "装车喷洒作业",
+                                    showExport: true,
+                                    columns: [{
+                                        radio: true
+                                    },
+                                        {
+                                            title: "序号",
+                                            formatter: function (value, row, index) {
+                                                return $.table.serialNumber(index);
+                                            }
+                                        },
+                                        {
+                                            field : 'sprayId',
+                                            title : '序号',
+                                            visible: false
+                                        },
+                                        {
+                                            field : 'sprayLocation',
+                                            title : '装车点'
+                                        },
+                                        {
+                                            field : 'sprayCarsCount',
+                                            title : '喷洒车数',
+                                            sortable: true
+                                        },
+                                        {
+                                            field : 'freezerId',
+                                            title : '冻车id',
+                                            visible: false
+                                        },
+                                        {
+                                            field:'count',
+                                            title:'冻车数',
+                                            sortable:true,
+                                            formatter:function (value,row,index) {
+                                                return '<a href="javascript:void(0)" onclick ="detail(\''+row.freezerId+'\')">'+value+'</a>'
+                                            }
+                                        },
+                                        {
+                                            field : 'spraySum',
+                                            title : '喷洒总量',
+                                            sortable: true
+                                        },
+                                        {
+                                            field : 'sprayName',
+                                            title : '喷洒人'
+                                        },
+                                        {
+                                            field : 'sprayCompany',
+                                            title : '喷洒单位',
+                                            align:"center"
+                                        },
+                                        {
+                                            field : 'sprayDatetime',
+                                            title : '喷洒时间',
+                                            sortable: true
+                                        },
+                                        {
+                                            field : 'sprayDeparture',
+                                            title : '发站'
+                                        },
+                                        {
+                                            field : 'sprayStation',
+                                            title : '到站'
+                                        },
+                                        {
+                                            field: 'sprayType',
+                                            title: '品类',
+                                            align: 'center',
+                                            formatter: function(value, row, index) {
+                                                return $.table.selectDictLabel(types, value);
+                                            }
+                                        },
+                                        {
+                                            field : 'sprayCreatename',
+                                            title : '创建人',
+                                            sortable: true
+                                        },
+                                        {
+                                            title: '操作',
+                                            align: 'center',
+                                            formatter: function(value, row, index) {
+                                                var actions = [];
+                                                /*
+                                                                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.sprayId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                                                */
+                                                actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.sprayId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                                                return actions.join('');
+                                            }
+                                        }]
+                                };
+                                $.table.init(options);
+                            });
+                            var id =$("input[name='id']").val();
+                            /***
+                             * 未喷洒
+                             * **/
+                            function Unsprayed() {
+                                $.operate.post(pre +"/AutoEditSave",{fdReportId:id},function (res) {
+                                    $.modal.msgReload("操作成功")
+                                });
+                            }
+
+                            /**
+                             * 已喷洒
+                             */
+                           function sprayed(){
+                               const sprayId = $.table.selectColumns("sprayId");
+                               let join = sprayId.join("");
+                               if(join==""){
+                                   $.modal.alertError("请选择一条数据")
+                                   return false;
+
+                               }
+                            $.operate.post(pre+"/SprayedEditSave",{fdReportId:id,sprayId:join},function () {
+                            $.modal.msgReload("操作成功")
+});
+                           }
+                        </script>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+    </div>
+</div>
+</body>
+</html>

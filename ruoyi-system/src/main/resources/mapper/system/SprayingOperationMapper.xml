@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SprayingOperationMapper">
+    
+    <resultMap type="SprayingOperation" id="SprayingOperationResult">
+        <result property="sprayId"    column="Spray_id"    />
+        <result property="sprayLocation"    column="Spray_Location"    />
+        <result property="sprayLocationId"    column="Spray_Location_id"    />
+        <result property="sprayCarsCount"    column="Spray_cars_count"    />
+        <result property="sprayDcCount"    column="Spray_dc_count"    />
+        <result property="freezerId"    column="Freezer_id"    />
+        <result property="spraySum"    column="Spray_sum"    />
+        <result property="sprayName"    column="Spray_name"    />
+        <result property="sprayCompany"    column="Spray_Company"    />
+        <result property="sprayCreatetime"    column="Spray_createtime"    />
+        <result property="sprayDatetime"    column="Spray_datetime"    />
+        <result property="sprayUpdatetime"    column="Spray_updatetime"    />
+        <result property="sprayDeparture"    column="Spray_Departure"    />
+        <result property="sprayStation"    column="Spray_station"    />
+        <result property="sprayDeptId"    column="Spray_dept_id"    />
+        <result property="sprayType"    column="Spray_type"    />
+        <result property="sprayRemarks"    column="Spray_remarks"    />
+        <result property="sprayCreatename"    column="Spray_createname"    />
+        <result property="sprayDeptPId"    column="Spray_dept_p_id"    />
+        <result property="count" column="count"/>
+        <result property="cars" column="cars"/>
+        <result property="PDeptId" column="pdeptid"/>
+    </resultMap>
+	
+	<sql id="selectSprayingOperationVo">
+        select Spray_id, Spray_Location, Spray_Location_id, Spray_cars_count, Spray_dc_count, Freezer_id, Spray_sum, Spray_name, Spray_Company, Spray_createtime, Spray_datetime, Spray_updatetime, Spray_Departure, Spray_station, Spray_dept_id, Spray_type, Spray_remarks, Spray_createname, Spray_dept_p_id from Spraying_operation
+    </sql>
+    <!--查询喷洒冻车数-->
+    <sql id="selectSprayingByOperationCount">
+        SELECT * FROM Spraying_operation s INNER JOIN Frozen_car_Report f ON s.Freezer_id =f.Fd_Report_id
+    </sql>
+	<sql id="selectSprayingOperationVos">
+    SELECT
+	*
+FROM
+	Spraying_operation e
+INNER JOIN
+	(
+		SELECT
+			COUNT (*) AS count,
+			s.Freezer_id AS id
+		FROM
+			Spraying_operation s,
+			Frozen_car_Report f
+		WHERE
+			s.Freezer_id = f.Fd_Report_id
+		GROUP BY
+			s.Freezer_id
+	) t ON e.Freezer_id =t.id
+    </sql>
+    <select id="selectSprayingOperationList" parameterType="SprayingOperation" resultMap="SprayingOperationResult">
+        <include refid="selectSprayingOperationVo"/>
+        <where>  
+            <if test="sprayId != null "> and Spray_id = #{sprayId}</if>
+             <if test="sprayLocation != null  and sprayLocation != '' "> and Spray_Location = #{sprayLocation}</if>
+             <if test="sprayLocationId != null "> and Spray_Location_id = #{sprayLocationId}</if>
+             <if test="sprayCarsCount != null "> and Spray_cars_count = #{sprayCarsCount}</if>
+             <if test="sprayDcCount != null "> and Spray_dc_count = #{sprayDcCount}</if>
+             <if test="freezerId != null "> and Freezer_id = #{freezerId}</if>
+             <if test="spraySum != null "> and Spray_sum = #{spraySum}</if>
+             <if test="sprayName != null  and sprayName != '' "> and Spray_name = #{sprayName}</if>
+             <if test="sprayCompany != null  and sprayCompany != '' "> and Spray_Company = #{sprayCompany}</if>
+             <if test="sprayCreatetime != null "> and Spray_createtime LIKE  concat(concat('%',#{sprayCreatetime}),'%')</if>
+             <if test="sprayDatetime != null "> and Spray_datetime LIKE  concat(concat('%',#{sprayDatetime}),'%') </if>
+             <if test="sprayUpdatetime != null "> and Spray_updatetime = #{sprayUpdatetime}</if>
+             <if test="sprayDeparture != null  and sprayDeparture != '' "> and Spray_Departure = #{sprayDeparture}</if>
+             <if test="sprayStation != null  and sprayStation != '' "> and Spray_station = #{sprayStation}</if>
+             <if test="sprayDeptId != null "> and Spray_dept_id = #{sprayDeptId}</if>
+             <if test="sprayType != null "> and Spray_type = #{sprayType}</if>
+             <if test="sprayRemarks != null  and sprayRemarks != '' "> and Spray_remarks = #{sprayRemarks}</if>
+             <if test="sprayCreatename != null  and sprayCreatename != '' "> and Spray_createname = #{sprayCreatename}</if>
+             <if test="sprayDeptPId != null "> and Spray_dept_p_id = #{sprayDeptPId}</if>
+         </where>
+    </select>
+    <select id="selectBySprayingOperationCount" parameterType="java.lang.Integer" resultMap="SprayingOperationResult">
+        <include refid="selectSprayingByOperationCount"/>
+        where s.Freezer_id=#{freezerId}
+    </select>
+    <!--测试-->
+    <select id="selectSprayingOperationLists" parameterType="SprayingOperation" resultMap="SprayingOperationResult">
+        <include refid="selectSprayingOperationVos"/>
+        <where>
+            <if test="sprayId != null "> and Spray_id = #{sprayId}</if>
+            <if test="sprayLocation != null  and sprayLocation != '' "> and Spray_Location = #{sprayLocation}</if>
+            <if test="sprayLocationId != null "> and Spray_Location_id = #{sprayLocationId}</if>
+            <if test="sprayCarsCount != null "> and Spray_cars_count = #{sprayCarsCount}</if>
+            <if test="sprayDcCount != null "> and Spray_dc_count = #{sprayDcCount}</if>
+            <if test="freezerId != null "> and Freezer_id = #{freezerId}</if>
+            <if test="spraySum != null "> and Spray_sum = #{spraySum}</if>
+            <if test="sprayName != null  and sprayName != '' "> and Spray_name = #{sprayName}</if>
+            <if test="sprayCompany != null  and sprayCompany != '' "> and Spray_Company = #{sprayCompany}</if>
+            <if test="sprayCreatetime != null "> and Spray_createtime = #{sprayCreatetime}</if>
+            <if test="sprayDatetime != null "> and Spray_datetime LIKE concat(concat('%',#{sprayDatetime}),'%')</if>
+            <if test="sprayUpdatetime != null "> and Spray_updatetime = #{sprayUpdatetime}</if>
+            <if test="sprayDeparture != null  and sprayDeparture != '' "> and Spray_Departure = #{sprayDeparture}</if>
+            <if test="sprayStation != null  and sprayStation != '' "> and Spray_station = #{sprayStation}</if>
+            <if test="sprayDeptId != null "> and Spray_dept_id = #{sprayDeptId}</if>
+            <if test="sprayType != null "> and Spray_type = #{sprayType}</if>
+            <if test="sprayRemarks != null  and sprayRemarks != '' "> and Spray_remarks = #{sprayRemarks}</if>
+            <if test="sprayCreatename != null  and sprayCreatename != '' "> and Spray_createname = #{sprayCreatename}</if>
+            <if test="sprayDeptPId != null "> and Spray_dept_p_id = #{sprayDeptPId}</if>
+        </where>
+    </select>
+    <select id="selectSprayingOperationById" parameterType="Integer" resultMap="SprayingOperationResult">
+        <include refid="selectSprayingOperationVo"/>
+        where Spray_id = #{sprayId}
+    </select>
+        
+    <insert id="insertSprayingOperation" parameterType="SprayingOperation">
+     <selectKey keyProperty="sprayId" resultType="Integer" order="BEFORE">
+        select  SEQ_SPRAYING_OPERATION.NEXTVAL as sprayId from DUAL
+     </selectKey>
+        insert into Spraying_operation
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="sprayId != null  ">Spray_id,</if>
+			<if test="sprayLocation != null  and sprayLocation != ''  ">Spray_Location,</if>
+			<if test="sprayLocationId != null  ">Spray_Location_id,</if>
+			<if test="sprayCarsCount != null  ">Spray_cars_count,</if>
+			<if test="sprayDcCount != null  ">Spray_dc_count,</if>
+			<if test="freezerId != null  ">Freezer_id,</if>
+			<if test="spraySum != null  ">Spray_sum,</if>
+			<if test="sprayName != null  and sprayName != ''  ">Spray_name,</if>
+			<if test="sprayCompany != null  and sprayCompany != ''  ">Spray_Company,</if>
+			<if test="sprayCreatetime != null  ">Spray_createtime,</if>
+			<if test="sprayDatetime != null  ">Spray_datetime,</if>
+			<if test="sprayUpdatetime != null  ">Spray_updatetime,</if>
+			<if test="sprayDeparture != null  and sprayDeparture != ''  ">Spray_Departure,</if>
+			<if test="sprayStation != null  and sprayStation != ''  ">Spray_station,</if>
+			<if test="sprayDeptId != null  ">Spray_dept_id,</if>
+			<if test="sprayType != null  ">Spray_type,</if>
+			<if test="sprayRemarks != null  and sprayRemarks != ''  ">Spray_remarks,</if>
+			<if test="sprayCreatename != null  and sprayCreatename != ''  ">Spray_createname,</if>
+			<if test="sprayDeptPId != null  ">Spray_dept_p_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="sprayId != null  ">#{sprayId},</if>
+			<if test="sprayLocation != null  and sprayLocation != ''  ">#{sprayLocation},</if>
+			<if test="sprayLocationId != null  ">#{sprayLocationId},</if>
+			<if test="sprayCarsCount != null  ">#{sprayCarsCount},</if>
+			<if test="sprayDcCount != null  ">#{sprayDcCount},</if>
+			<if test="freezerId != null  ">#{freezerId},</if>
+			<if test="spraySum != null  ">#{spraySum},</if>
+			<if test="sprayName != null  and sprayName != ''  ">#{sprayName},</if>
+			<if test="sprayCompany != null  and sprayCompany != ''  ">#{sprayCompany},</if>
+			<if test="sprayCreatetime != null  ">#{sprayCreatetime},</if>
+			<if test="sprayDatetime != null  ">#{sprayDatetime},</if>
+			<if test="sprayUpdatetime != null  ">#{sprayUpdatetime},</if>
+			<if test="sprayDeparture != null  and sprayDeparture != ''  ">#{sprayDeparture},</if>
+			<if test="sprayStation != null  and sprayStation != ''  ">#{sprayStation},</if>
+			<if test="sprayDeptId != null  ">#{sprayDeptId},</if>
+			<if test="sprayType != null  ">#{sprayType},</if>
+			<if test="sprayRemarks != null  and sprayRemarks != ''  ">#{sprayRemarks},</if>
+			<if test="sprayCreatename != null  and sprayCreatename != ''  ">#{sprayCreatename},</if>
+			<if test="sprayDeptPId != null  ">#{sprayDeptPId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateSprayingOperation" parameterType="SprayingOperation">
+        update Spraying_operation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sprayLocation != null  and sprayLocation != ''  ">Spray_Location = #{sprayLocation},</if>
+            <if test="sprayLocationId != null  ">Spray_Location_id = #{sprayLocationId},</if>
+            <if test="sprayCarsCount != null  ">Spray_cars_count = #{sprayCarsCount},</if>
+            <if test="sprayDcCount != null  ">Spray_dc_count = #{sprayDcCount},</if>
+            <if test="freezerId != null  ">Freezer_id = #{freezerId},</if>
+            <if test="spraySum != null  ">Spray_sum = #{spraySum},</if>
+            <if test="sprayName != null  and sprayName != ''  ">Spray_name = #{sprayName},</if>
+            <if test="sprayCompany != null  and sprayCompany != ''  ">Spray_Company = #{sprayCompany},</if>
+            <if test="sprayCreatetime != null  ">Spray_createtime = #{sprayCreatetime},</if>
+            <if test="sprayDatetime != null  ">Spray_datetime = #{sprayDatetime},</if>
+            <if test="sprayUpdatetime != null  ">Spray_updatetime = #{sprayUpdatetime},</if>
+            <if test="sprayDeparture != null  and sprayDeparture != ''  ">Spray_Departure = #{sprayDeparture},</if>
+            <if test="sprayStation != null  and sprayStation != ''  ">Spray_station = #{sprayStation},</if>
+            <if test="sprayDeptId != null  ">Spray_dept_id = #{sprayDeptId},</if>
+            <if test="sprayType != null  ">Spray_type = #{sprayType},</if>
+            <if test="sprayRemarks != null  and sprayRemarks != ''  ">Spray_remarks = #{sprayRemarks},</if>
+            <if test="sprayCreatename != null  and sprayCreatename != ''  ">Spray_createname = #{sprayCreatename},</if>
+            <if test="sprayDeptPId != null  ">Spray_dept_p_id = #{sprayDeptPId},</if>
+        </trim>
+        where Spray_id = #{sprayId}
+    </update>
+
+	<delete id="deleteSprayingOperationById" parameterType="Integer">
+        delete from Spraying_operation where Spray_id = #{sprayId}
+    </delete>
+	
+    <delete id="deleteSprayingOperationByIds" parameterType="String">
+        delete from Spraying_operation where Spray_id in 
+        <foreach item="sprayId" collection="array" open="(" separator="," close=")">
+            #{sprayId}
+        </foreach>
+    </delete>
+    <!--个个货运中心煤及矿粉喷洒车数-->
+    <select id="selectByCoalCars" parameterType="Integer" resultMap="SprayingOperationResult">
+    SELECT
+	COUNT (*) AS count,s.Spray_dept_p_id,s.Spray_type
+FROM
+	Spraying_operation s
+INNER JOIN sys_dept d ON s.Spray_dept_p_id = d.dept_id
+WHERE
+	s.Spray_type = #{param1}
+GROUP BY
+	s.Spray_dept_p_id,s.Spray_type,s.Spray_type
+    </select>
+    <!--通过类型进行区分、进行汇总-->
+    <select id="selectByTypeCarS" resultMap="SprayingOperationResult">
+                SELECT
+            COUNT(*) as cars,s.Spray_dept_p_id AS pdeptid,s.Spray_type
+        FROM
+            Spraying_operation s
+        INNER JOIN sys_dept d ON s.Spray_dept_p_id = d.dept_id
+        WHERE
+            s.Spray_type =2 OR s.Spray_type =1 GROUP BY s.Spray_dept_p_id,s.Spray_type
+    </select>
+<!--验证是否存在-->
+    <select id="selectByVerify" parameterType="Integer" resultMap="SprayingOperationResult" >
+        SELECT count(*) as count FROM Spraying_operation s WHERE s.Spray_dept_p_id =#{param1} AND s.Spray_type =#{param2}
+    </select>
+    <!--根据货运中心查询喷洒总量-->
+    <select id="selectByHyZx" parameterType="Integer" resultMap="SprayingOperationResult">
+        SELECT * FROM Spraying_operation s WHERE s.Spray_dept_p_id =#{sprayDeptPId}
+    </select>
+</mapper>

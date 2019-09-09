@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('冻车核实列表')" />
+</head>
+<style type="text/css">
+	.table {table-layout:fixed;}
+</style>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								车次：<input type="text" name="fdReporNum"/>
+							</li>
+
+							<li>
+								达到时间：<input type="text" name="fdReporDatetime"/>
+							</li>
+							<li>
+								车号：<input type="text" name="fdReporLicense"/>
+							</li>
+							<li>
+								是否核实：<input type="text" name="fdVerify"/>
+							</li>
+
+							<li>
+								是否喷洒：<input type="text" name="fdSpray"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:frozenCarReport:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="system:frozenCarReport:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:frozenCarReport:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:frozenCarReport:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:frozenCarReport:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:frozenCarReport:remove')}]];
+		var types = [[${@dict.getType('sys_jclx')}]];
+		const datas = [[${@dict.getType('psztai')}]];
+        const prefix = ctx + "system/frozenCarReport";
+
+        $(function() {
+            var options = {
+                url: prefix + "/VerifyList",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "冻车核实",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'fdReportId', 
+					title : '冻车上报id',
+					visible: false
+				},
+					{
+						title:'序号',
+						visible:true,
+						width: 50,
+						formatter:function (value,row,index) {
+							return $.table.serialNumber(index)
+						}
+					},
+				{
+					field : 'fdReporNum',
+					title : '车次',
+					sortable: true,
+					align:'center',
+				    width: 80,
+				},
+				{
+					field : 'fdReporDatetime', 
+					title : '达到时间',
+					sortable: true,
+					align:'center',
+					width: 160,
+				},
+				{
+					field : 'fdReporNo', 
+					title : '顺位号',
+					sortable: true,
+					align:'center',
+					width: 60,
+				},
+				{
+					field : 'fdReporLicense', 
+					title : '车号',
+					sortable: true,
+					align:'center',
+					width: 100,
+				},
+				{
+					field : 'fdReporFz', 
+					title : '发站',
+					align:'center',
+					width: 100
+				},
+				{
+					field : 'fdReporDz', 
+					title : '到站',
+					width: 100,
+					align:'center'
+				},
+				{
+					field : 'fdReporPl', 
+					title : '品类',
+					width:60,
+					align:'center'
+				},
+				{
+					field : 'fdReporDjhd', 
+					title : '冻结厚度',
+					sortable: true,
+					align: 'center',
+					width: 80,
+				},
+				{
+					field : 'fdReporCount',
+					title : '吨数',
+					sortable: true,
+					align:'center',
+					width:40,
+				},
+				{
+					field : 'fdReporImpact', 
+					title : '影响时间',
+					sortable: true,
+					align:'center',
+					width: 100,
+				},
+				{
+					field : 'fdReporImage',
+					title : '图片',
+					width: 80,
+					align:'center',
+					formatter:function (value,row,index) {
+						return $.table.imgView(value)
+					}
+				},
+				{
+					field : 'fdVerify', 
+					title : '是否核实',
+					align:'center',
+					width: 80,
+					formatter:function (value,row,index) {
+						if (row.fdVerify == 0) {
+							return '<a href="javaScript:void(0)" onclick="disable(\'' + row.fdReportId + '\')"><font color="red">未核实</font><a/> ';
+						} else if (row.fdVerify ==1) {
+							return '<i onclick="enable(\'' + row.fdReportId + '\')"><font color="#7fff00">已核实</font></i> ';
+						}else if (row.fdVerify ==2) {
+							return '<a href="javaScript:void(0)" onclick="blanknull(\'' + row.fdReportId + '\')"><font color="#ff7f50">未核实</font><a/> ';
+
+						}
+					}
+				},
+				{
+					field : 'fdSpray', 
+					title : '是否喷洒',
+					align:'center',
+					width: 80,
+					formatter:function (value,row,index) {
+						return $.table.selectDictLabel(datas,value)
+					}
+				},
+				{
+					field : 'fdRelieve', 
+					title : '是否解除',
+					align:'center',
+					width:80,
+					formatter:function (value,row,index) {
+                        /*自动解除方法*/
+						//先获取到达时间戳
+						var date =new Date(row.fdReporDatetime);
+						var datetime =date.getTime();
+						//console.log(datetime)
+					    var InfluenceTime=row.fdReporImpact*3600*1000//影响时间戳
+						datetime+InfluenceTime;
+						//console.log(InfluenceTime)
+						/*	$.operate.post(prefix+"/AutoEdit",{fdReportId:row.fdReportId},function (res) {
+								if(JSON.stringify(res)==0){
+									$.modal.msgSuccess("自动解除成功");
+									return;
+								}
+							});*/
+						return $.table.selectDictLabel(types,value);
+					}
+				},
+				{
+					field : 'fdManualRelieveDatetime', 
+					title : '手工解除时间',
+					sortable: true,
+					align:'center',
+					width: 160,
+				},
+				{
+					field : 'fdEstimateRelieveDatetime', 
+					title : '预计解除时间',
+					sortable: true,
+					align:'center',
+					width: 160,
+					formatter:function (value,row,index) {
+					var InfluenceTime=row.fdReporImpact;//影响时间
+					var ArriveTime =new Date(row.fdReporDatetime);//到达时间
+					var date =new Date(ArriveTime.getTime()+InfluenceTime*3600*1000);
+					  if (date.getHours()<10){
+						  var newTime=date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' +0+ date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+						  return newTime;
+					  }
+						var tt=new Date(parseInt(date) * 1000).toLocaleString()
+					var newTime=date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+					return newTime;
+					}
+				}
+		     /*   {
+		            title: '操作',
+		            align: 'center',
+					width:100,
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.fdReportId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.fdReportId + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }*/
+		        ]
+            };
+            $.table.init(options);
+        });
+    </script>
+<script>
+	function disable(fdReportId) {
+		$.modal.open("核实冻车",ctx+"system/frozenCarReport/VerifyEdit?id="+fdReportId);
+	}
+</script>
+</body>
+</html>

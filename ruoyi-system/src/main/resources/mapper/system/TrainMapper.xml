@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TrainMapper">
+    
+    <resultMap type="Train" id="TrainResult">
+        <result property="trainId"    column="Train_Id"    />
+        <result property="trainFileName"    column="Train_file_name"    />
+        <result property="trainCreatetime"    column="Train_createtime"    />
+        <result property="trainCreatename"    column="Train_createname"    />
+        <result property="trainRemarks"    column="Train_Remarks"    />
+        <result property="trainSpare"    column="Train_Spare"    />
+        <result property="trainTitile"    column="Train_titile"    />
+    </resultMap>
+	
+	<sql id="selectTrainVo">
+        select Train_Id, Train_file_name, Train_createtime, Train_createname, Train_Remarks, Train_Spare, Train_titile from Train
+    </sql>
+	
+    <select id="selectTrainList" parameterType="Train" resultMap="TrainResult">
+        <include refid="selectTrainVo"/>
+        <where>  
+            <if test="trainId != null "> and Train_Id = #{trainId}</if>
+             <if test="trainFileName != null  and trainFileName != '' "> and Train_file_name = #{trainFileName}</if>
+             <if test="trainCreatetime != null "> and Train_createtime = #{trainCreatetime}</if>
+             <if test="trainCreatename != null  and trainCreatename != '' "> and Train_createname = #{trainCreatename}</if>
+             <if test="trainRemarks != null  and trainRemarks != '' "> and Train_Remarks = #{trainRemarks}</if>
+             <if test="trainSpare != null  and trainSpare != '' "> and Train_Spare = #{trainSpare}</if>
+             <if test="trainTitile != null  and trainTitile != '' "> and Train_titile = #{trainTitile}</if>
+         </where>
+    </select>
+    
+    <select id="selectTrainById" parameterType="Integer" resultMap="TrainResult">
+        <include refid="selectTrainVo"/>
+        where Train_Id = #{trainId}
+    </select>
+        
+    <insert id="insertTrain" parameterType="Train">
+        insert into Train
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="trainId != null  ">Train_Id,</if>
+			<if test="trainFileName != null  and trainFileName != ''  ">Train_file_name,</if>
+			<if test="trainCreatetime != null  ">Train_createtime,</if>
+			<if test="trainCreatename != null  and trainCreatename != ''  ">Train_createname,</if>
+			<if test="trainRemarks != null  and trainRemarks != ''  ">Train_Remarks,</if>
+			<if test="trainSpare != null  and trainSpare != ''  ">Train_Spare,</if>
+			<if test="trainTitile != null  and trainTitile != ''  ">Train_titile,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="trainId != null  ">#{trainId},</if>
+			<if test="trainFileName != null  and trainFileName != ''  ">#{trainFileName},</if>
+			<if test="trainCreatetime != null  ">#{trainCreatetime},</if>
+			<if test="trainCreatename != null  and trainCreatename != ''  ">#{trainCreatename},</if>
+			<if test="trainRemarks != null  and trainRemarks != ''  ">#{trainRemarks},</if>
+			<if test="trainSpare != null  and trainSpare != ''  ">#{trainSpare},</if>
+			<if test="trainTitile != null  and trainTitile != ''  ">#{trainTitile},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTrain" parameterType="Train">
+        update Train
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="trainFileName != null  and trainFileName != ''  ">Train_file_name = #{trainFileName},</if>
+            <if test="trainCreatetime != null  ">Train_createtime = #{trainCreatetime},</if>
+            <if test="trainCreatename != null  and trainCreatename != ''  ">Train_createname = #{trainCreatename},</if>
+            <if test="trainRemarks != null  and trainRemarks != ''  ">Train_Remarks = #{trainRemarks},</if>
+            <if test="trainSpare != null  and trainSpare != ''  ">Train_Spare = #{trainSpare},</if>
+            <if test="trainTitile != null  and trainTitile != ''  ">Train_titile = #{trainTitile},</if>
+        </trim>
+        where Train_Id = #{trainId}
+    </update>
+
+	<delete id="deleteTrainById" parameterType="Integer">
+        delete from Train where Train_Id = #{trainId}
+    </delete>
+	
+    <delete id="deleteTrainByIds" parameterType="String">
+        delete from Train where Train_Id in 
+        <foreach item="trainId" collection="array" open="(" separator="," close=")">
+            #{trainId}
+        </foreach>
+    </delete>
+    
+</mapper>

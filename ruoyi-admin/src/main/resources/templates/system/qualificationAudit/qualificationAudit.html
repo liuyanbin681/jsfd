@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('资质审核列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<!--<li>
+								厂商：<input type="text" name="zzManufacturer"/>
+							</li>-->
+
+							<!--<li>
+								资质文件名称：<input type="text" name="zzFilename"/>
+							</li>-->
+
+							<!--<li>
+								创建时间：<input type="text" name="zzCreatetime"/>
+							</li>-->
+<!--
+							<li>
+								修改时间：<input type="text" name="zzUpdatetime"/>
+							</li>-->
+
+							<!--<li>
+								用户id：<input type="text" name="zzUserId"/>
+							</li>-->
+<!--
+							<li>
+								资质审核备注：<input type="text" name="zzRemarks"/>
+							</li>-->
+
+							<!--<li>
+								资质审核部门id：<input type="text" name="zzDeptId"/>
+							</li>-->
+
+							<li>
+								资质审核标题：<input type="text" name="zzTitle"/>
+							</li>
+
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:qualificationAudit:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="system:qualificationAudit:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:qualificationAudit:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:qualificationAudit:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:qualificationAudit:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:qualificationAudit:remove')}]];
+        var prefix = ctx + "system/qualificationAudit";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "资质审核",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'zzId', 
+					title : '资质审核id'
+				},
+				{
+					field : 'zzTitle',
+					title : '资质审核标题'
+				},
+				{
+					field : 'zzFilename', 
+					title : '资质文件名称'
+				},
+				{
+						field : 'zzUserId',
+						title : '创建人',
+						sortable: true
+				},
+				{
+					field : 'zzCreatetime', 
+					title : '创建时间',
+					sortable: true
+				},
+				{
+					field : 'zzRemarks', 
+					title : '资质审核备注',
+					formatter: function(value, row, index) {
+						return $.table.tooltip(value);
+					}
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.zzId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="downloadFile(\'' + row.zzFilename + '\')"><i class="fa fa-edit"></i>下载</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.zzId + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+<script  th:inline="javascript">
+	function downloadFile(zzId) {
+		window.location.href = ctx + "system/qualificationAudit/common/download/?zzId="+zzId
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('装车喷洒作业列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								装车点：<input type="text" name="sprayLocation"/>
+							</li>
+							<li>
+								喷洒人：<input type="text" name="sprayName"/>
+							</li>
+
+							<li>
+								喷洒单位：<input type="text" name="sprayCompany"/>
+							</li>
+							<li>
+								喷洒时间：<input type="text" name="sprayDatetime"/>
+							</li>
+
+							<li>
+								发站：<input type="text" name="sprayDeparture"/>
+							</li>
+
+							<li>
+								到站：<input type="text" name="sprayStation"/>
+							</li>
+
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:sprayingOperation:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="system:sprayingOperation:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:sprayingOperation:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:sprayingOperation:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:sprayingOperation:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:sprayingOperation:remove')}]];
+		var types = [[${@dict.getType('pslxing')}]];
+        var prefix = ctx + "system/sprayingOperation";
+        const pre =ctx+"system/sprayingOperation";
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "装车喷洒作业",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+					{
+						title: "序号",
+						formatter: function (value, row, index) {
+							return $.table.serialNumber(index);
+						}
+					},
+				{
+					field : 'sprayId', 
+					title : '序号',
+					visible: false
+				},
+				{
+					field : 'sprayLocation', 
+					title : '装车点'
+				},
+				{
+					field : 'sprayCarsCount', 
+					title : '喷洒车数',
+					sortable: true
+				},
+					{
+						field : 'freezerId',
+						title : '冻车id',
+						visible: false
+					},
+					{
+					field:'count',
+					title:'冻车数',
+					sortable:true,
+					formatter:function (value,row,index) {
+						return '<a href="javascript:void(0)" onclick ="detail(\''+row.freezerId+'\')">'+value+'</a>'
+						}
+					},
+				{
+					field : 'spraySum', 
+					title : '喷洒总量',
+					sortable: true
+				},
+				{
+					field : 'sprayName', 
+					title : '喷洒人'
+				},
+				{
+					field : 'sprayCompany', 
+					title : '喷洒单位',
+					align:"center"
+				},
+				{
+					field : 'sprayDatetime', 
+					title : '喷洒时间',
+					sortable: true
+				},
+				{
+					field : 'sprayDeparture', 
+					title : '发站'
+				},
+				{
+					field : 'sprayStation',
+					title : '到站'
+				},
+				{
+						field: 'sprayType',
+						title: '品类',
+						align: 'center',
+						formatter: function(value, row, index) {
+							return $.table.selectDictLabel(types, value);
+						}
+				},
+				{
+					field : 'sprayCreatename', 
+					title : '创建人',
+					sortable: true
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+/*
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.sprayId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+*/
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.sprayId + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+		/*冻车列表-详细*/
+		function detail(freezerId) {
+			var url = pre + '/detail/' + freezerId;
+			createMenuItem(url, "冻车列表");
+		}
+    </script>
+</body>
+</html>

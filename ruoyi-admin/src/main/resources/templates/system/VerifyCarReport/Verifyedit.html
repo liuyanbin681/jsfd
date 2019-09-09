@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改到站冻车上报')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-frozenCarReport-edit" th:object="${frozenCarReport}">
+            <input id="fdReportId" name="fdReportId" th:field="*{fdReportId}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">车次：</label>
+				<div class="col-sm-8">
+					<input id="fdReporNum" name="fdReporNum" th:field="*{fdReporNum}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">达到时间：</label>
+				<div class="col-sm-8">
+					<input id="fdReporDatetime" name="fdReporDatetime" th:field="*{fdReporDatetime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">顺位号：</label>
+				<div class="col-sm-8">
+					<input id="fdReporNo" name="fdReporNo" th:field="*{fdReporNo}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">车号：</label>
+				<div class="col-sm-8">
+					<input id="fdReporLicense" name="fdReporLicense" th:field="*{fdReporLicense}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">发站：</label>
+				<div class="col-sm-8">
+					<input id="fdReporFz" name="fdReporFz" th:field="*{fdReporFz}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">到站：</label>
+				<div class="col-sm-8">
+					<input id="fdReporDz" name="fdReporDz" th:field="*{fdReporDz}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">品类：</label>
+				<div class="col-sm-8">
+					<input id="fdReporPl" name="fdReporPl" th:field="*{fdReporPl}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">父id：</label>
+				<div class="col-sm-8">
+					<input id="fdReporPDeptId" name="fdReporPDeptId" th:field="*{fdReporPDeptId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">上级营业部id：</label>
+				<div class="col-sm-8">
+					<input id="fdReporDeptId" name="fdReporDeptId" th:field="*{fdReporDeptId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">收货人：</label>
+				<div class="col-sm-8">
+					<input id="fdReporName" name="fdReporName" th:field="*{fdReporName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">冻结厚度：</label>
+				<div class="col-sm-8">
+					<input id="fdReporDjhd" name="fdReporDjhd" th:field="*{fdReporDjhd}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">每车冻结厚度：</label>
+				<div class="col-sm-8">
+					<input id="fdReporCount" name="fdReporCount" th:field="*{fdReporCount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">影响时间：</label>
+				<div class="col-sm-8">
+					<input id="fdReporImpact" name="fdReporImpact" th:field="*{fdReporImpact}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">图片：</label>
+				<div class="col-sm-8">
+					<input id="fdReporImage" name="fdReporImage" th:field="*{fdReporImage}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input id="fdCreatetime" name="fdCreatetime" th:field="*{fdCreatetime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">修改时间：</label>
+				<div class="col-sm-8">
+					<input id="fdUpdatetime" name="fdUpdatetime" th:field="*{fdUpdatetime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注：</label>
+				<div class="col-sm-8">
+					<input id="fdRemarks" name="fdRemarks" th:field="*{fdRemarks}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">营业网点部门id：</label>
+				<div class="col-sm-8">
+					<input id="fdReporYywdDeptId" name="fdReporYywdDeptId" th:field="*{fdReporYywdDeptId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">0 正常 1 不正常：</label>
+				<div class="col-sm-8">
+					<input id="fdReporDelFlag" name="fdReporDelFlag" th:field="*{fdReporDelFlag}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">是否核实 0未核实，1已核实：</label>
+				<div class="col-sm-8">
+					<input id="fdVerify" name="fdVerify" th:field="*{fdVerify}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">是否喷洒，0未喷洒，1已喷洒：</label>
+				<div class="col-sm-8">
+					<input id="fdSpray" name="fdSpray" th:field="*{fdSpray}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">是否解除，0未解除，1已解除：</label>
+				<div class="col-sm-8">
+					<input id="fdRelieve" name="fdRelieve" th:field="*{fdRelieve}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">手工解除时间：</label>
+				<div class="col-sm-8">
+					<input id="fdManualRelieveDatetime" name="fdManualRelieveDatetime" th:field="*{fdManualRelieveDatetime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">预计解除时间：</label>
+				<div class="col-sm-8">
+					<input id="fdEstimateRelieveDatetime" name="fdEstimateRelieveDatetime" th:field="*{fdEstimateRelieveDatetime}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "system/frozenCarReport";
+		$("#form-frozenCarReport-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-frozenCarReport-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

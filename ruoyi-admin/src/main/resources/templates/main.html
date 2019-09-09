@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('组合表头')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+	<span style="text-align: center;display:block;background: #0e9aef;size: A4;font-size: 20px">防冻作业统计</span>
+	<div class="row">
+		<div class="col-sm-12 select-table table-bordered">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+	</div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+	var prefix = ctx + "system/sum";
+	var datas = [[${@dict.getType('sys_normal_disable')}]];
+
+	$(function() {
+		var options = {
+			url: prefix+"/sumAll",
+			showSearch: false,
+			showRefresh: false,
+			showToggle: false,
+			showColumns: false,
+			showFooter: false,
+			columns : [
+				[{
+					title : '单位',
+					align : 'center',
+					colspan : 1
+				}, {
+					title : '装车数',
+					align : 'center',
+					colspan : 3
+				},
+					{
+						title:'喷洒量',
+						align:'center',
+						colspan:1
+					},
+					{
+						title:'储备量',
+						align:'center',
+						colspan:1
+					},
+					{
+						title:'购买量',
+						align:'center'
+					},
+					{
+						title:'核实率',
+						align:'center'
+					},
+					{
+						title:'车均喷洒量',
+						align:'center'
+					},
+					{
+						title : '冻车',
+						align : 'center',
+						colspan : 1
+					}
+				],
+				[{
+					field:'name',
+					align:'center',
+					formatter:function (value,row,index) {
+						return '<a href="javaScript:void(0) " onclick="hyzx(\''+row.name+'\')">'+value+'</a>';
+					}
+				}, {
+					field : 'coalCount',
+					title : '煤',
+					align:'center',
+					footerFormatter:function (value) {
+						var sumBalance = 0;
+						for (var i in value) {
+							sumBalance += parseFloat(value[i].coalCount);
+						}
+						return "总计：" + sumBalance;
+					},
+
+				},{
+					field : 'mpCount',
+					title : '矿粉',
+					align:'center',
+					footerFormatter:function (value) {
+						var sum =0;
+						for (var i in value){
+							sum+=parseFloat(value[i].mpCount);
+						}
+						return "总计："+sum
+					}
+				}, {
+					title:'合计',
+					align:'center',
+					formatter:function (value, row, index) {
+						var coal=  row.coalCount;
+						console.log(coal)
+						var mp =row.mpCount;
+						return coal+mp
+					}
+				},
+					{
+						field:'mpCSum',
+						title:'喷洒总量',
+						align:'center',
+					},
+					{
+						title:'储备总量',
+						align:'center'
+					},
+					{
+						title:'购买总量',
+						align:'center'
+					},
+					{
+						title:'核实率',
+						align:'center'
+					},
+					{
+						title:'车均喷洒量',
+						align:'center',
+						formatter:function (value,row,index) {
+							var coal=  row.coalCount;//煤喷洒车数
+							var mp =row.mpCount;//矿粉喷洒车数
+							var i =coal+mp;
+							var sum= row.mpCSum;//喷洒总量
+							return parseInt(sum/i);
+						}
+					},{
+					field : 'fre',
+					title : '冻车数',
+					align:'center',
+					footerFormatter:function (value) {
+						var sum=0;
+						for (var i in value){
+							sum+=parseFloat(value[i].fre);
+						}
+						return "总计"+sum;
+					},
+					formatter:function (value,row,index) {
+						return '<a href="javascript:void(0)" onclick ="detail(\''+row.freezerId+'\')">'+value+'</a>'
+
+					}
+				},
+
+				]
+			]
+		};
+		$.table.init(options);
+	});
+</script>
+</body>
+</html>

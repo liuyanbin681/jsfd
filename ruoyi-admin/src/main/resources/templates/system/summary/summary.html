@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('总结上报列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+
+							<li>
+								总结上报名称：<input type="text" name="summaryTitle"/>
+							</li>
+							<li>
+								创建人：<input type="text" name="summaryCreatename"/>
+							</li>
+
+							<li>
+								总结上报部门：<input type="text" name="summaryCreateDept"/>
+							</li>
+					         <li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:summary:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="system:summary:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:summary:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:summary:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+	 <script type="text/javascript" src="http://www.xdocin.com/xdoc.js"></script>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:summary:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:summary:remove')}]];
+        var prefix = ctx + "system/summary";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "总结上报",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+					{
+					title:'序号',
+					visible: true,
+						formatter:function (value,row,index) {
+							return $.table.serialNumber(index)
+						}
+					},
+				{
+					field : 'summaryTitle',
+					title : '标题',
+					align: 'center'
+				},
+				{
+					field : 'summaryFile', 
+					title : '文件名称',
+					align: 'center',
+					formatter:function (value,row,index) {
+						//return '<a href= "https://view.officeapps.live.com/op/view.aspx?src=profile/upload/'+value+' width="100%" height="100%" frameborder="1">'+value+'</a>'
+					   //return '<embed src="profile/upload/'+value+' " type="application/pdf" width="100%" height="100%">'+value+''
+						return '<a href="javaScript:void(0) " onclick="view(\''+row.summaryFile+'\')">'+value+'</a>';
+					}
+				},
+				{
+					field : 'summaryCreatename', 
+					title : '创建人',
+					align: 'center'
+				},
+				{
+					field : 'summaryCreateDept', 
+					title : '部门',
+					align:'center'
+				},
+				{
+					field : 'summaryCreateTime', 
+					title : '创建时间',
+					sortable: true
+				},
+				{
+					field : 'remarks', 
+					title : '备注',
+					align:'center'
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+					width:40,
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.sId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.sId + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+        /*在线浏览*/
+        function view(value) {
+			XDoc.run('http://192.168.0.12:8085/profile/upload/2019/08/29/e0e5a50368054ed07d85587bc93653a1_20190829200323.pdf', "pdf", {}, "_blank");
+		}
+    </script>
+</body>
+</html>

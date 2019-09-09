@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.RegulationsMapper">
+    
+    <resultMap type="Regulations" id="RegulationsResult">
+        <result property="rulesId"    column="Rules_Id"    />
+        <result property="rulesFile"    column="Rules_file"    />
+        <result property="rulesCreatetime"    column="Rules_createtime"    />
+        <result property="rulesName"    column="Rules_name"    />
+        <result property="rulesRemarks"    column="Rules_Remarks"    />
+        <result property="rulesSpare"    column="Rules_Spare"    />
+        <result property="rulesDeptId"    column="Rules_dept_id"    />
+        <result property="rulesRoleId"    column="Rules_role_id"    />
+        <result property="rulesDeptsIds"    column="Rules_depts_ids"    />
+        <result property="rulesUserId"    column="Rules_user_id"    />
+        <result property="rulesStatus"    column="Rules_status"    />
+        <result property="rulesResults"    column="Rules_results"    />
+    </resultMap>
+	
+	<sql id="selectRegulationsVo">
+        select Rules_Id, Rules_file, Rules_createtime, Rules_name, Rules_Remarks, Rules_Spare, Rules_dept_id, Rules_role_id, Rules_depts_ids, Rules_user_id, Rules_status, Rules_results from Regulations
+    </sql>
+	
+    <select id="selectRegulationsList" parameterType="Regulations" resultMap="RegulationsResult">
+        <include refid="selectRegulationsVo"/>
+        <where>  
+            <if test="rulesId != null "> and Rules_Id = #{rulesId}</if>
+             <if test="rulesFile != null  and rulesFile != '' "> and Rules_file = #{rulesFile}</if>
+             <if test="rulesCreatetime != null "> and Rules_createtime = #{rulesCreatetime}</if>
+             <if test="rulesName != null  and rulesName != '' "> and Rules_name = #{rulesName}</if>
+             <if test="rulesRemarks != null  and rulesRemarks != '' "> and Rules_Remarks = #{rulesRemarks}</if>
+             <if test="rulesSpare != null  and rulesSpare != '' "> and Rules_Spare = #{rulesSpare}</if>
+             <if test="rulesDeptId != null "> and Rules_dept_id = #{rulesDeptId}</if>
+             <if test="rulesRoleId != null "> and Rules_role_id = #{rulesRoleId}</if>
+             <if test="rulesDeptsIds != null  and rulesDeptsIds != '' "> and Rules_depts_ids = #{rulesDeptsIds}</if>
+             <if test="rulesUserId != null "> and Rules_user_id = #{rulesUserId}</if>
+             <if test="rulesStatus != null  and rulesStatus != '' "> and Rules_status = #{rulesStatus}</if>
+             <if test="rulesResults != null  and rulesResults != '' "> and Rules_results = #{rulesResults}</if>
+         </where>
+    </select>
+    
+    <select id="selectRegulationsById" parameterType="Integer" resultMap="RegulationsResult">
+        <include refid="selectRegulationsVo"/>
+        where Rules_Id = #{rulesId}
+    </select>
+        
+    <insert id="insertRegulations" parameterType="Regulations">
+        insert into Regulations
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="rulesId != null  ">Rules_Id,</if>
+			<if test="rulesFile != null  and rulesFile != ''  ">Rules_file,</if>
+			<if test="rulesCreatetime != null  ">Rules_createtime,</if>
+			<if test="rulesName != null  and rulesName != ''  ">Rules_name,</if>
+			<if test="rulesRemarks != null  and rulesRemarks != ''  ">Rules_Remarks,</if>
+			<if test="rulesSpare != null  and rulesSpare != ''  ">Rules_Spare,</if>
+			<if test="rulesDeptId != null  ">Rules_dept_id,</if>
+			<if test="rulesRoleId != null  ">Rules_role_id,</if>
+			<if test="rulesDeptsIds != null  and rulesDeptsIds != ''  ">Rules_depts_ids,</if>
+			<if test="rulesUserId != null  ">Rules_user_id,</if>
+			<if test="rulesStatus != null  and rulesStatus != ''  ">Rules_status,</if>
+			<if test="rulesResults != null  and rulesResults != ''  ">Rules_results,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="rulesId != null  ">#{rulesId},</if>
+			<if test="rulesFile != null  and rulesFile != ''  ">#{rulesFile},</if>
+			<if test="rulesCreatetime != null  ">#{rulesCreatetime},</if>
+			<if test="rulesName != null  and rulesName != ''  ">#{rulesName},</if>
+			<if test="rulesRemarks != null  and rulesRemarks != ''  ">#{rulesRemarks},</if>
+			<if test="rulesSpare != null  and rulesSpare != ''  ">#{rulesSpare},</if>
+			<if test="rulesDeptId != null  ">#{rulesDeptId},</if>
+			<if test="rulesRoleId != null  ">#{rulesRoleId},</if>
+			<if test="rulesDeptsIds != null  and rulesDeptsIds != ''  ">#{rulesDeptsIds},</if>
+			<if test="rulesUserId != null  ">#{rulesUserId},</if>
+			<if test="rulesStatus != null  and rulesStatus != ''  ">#{rulesStatus},</if>
+			<if test="rulesResults != null  and rulesResults != ''  ">#{rulesResults},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateRegulations" parameterType="Regulations">
+        update Regulations
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="rulesFile != null  and rulesFile != ''  ">Rules_file = #{rulesFile},</if>
+            <if test="rulesCreatetime != null  ">Rules_createtime = #{rulesCreatetime},</if>
+            <if test="rulesName != null  and rulesName != ''  ">Rules_name = #{rulesName},</if>
+            <if test="rulesRemarks != null  and rulesRemarks != ''  ">Rules_Remarks = #{rulesRemarks},</if>
+            <if test="rulesSpare != null  and rulesSpare != ''  ">Rules_Spare = #{rulesSpare},</if>
+            <if test="rulesDeptId != null  ">Rules_dept_id = #{rulesDeptId},</if>
+            <if test="rulesRoleId != null  ">Rules_role_id = #{rulesRoleId},</if>
+            <if test="rulesDeptsIds != null  and rulesDeptsIds != ''  ">Rules_depts_ids = #{rulesDeptsIds},</if>
+            <if test="rulesUserId != null  ">Rules_user_id = #{rulesUserId},</if>
+            <if test="rulesStatus != null  and rulesStatus != ''  ">Rules_status = #{rulesStatus},</if>
+            <if test="rulesResults != null  and rulesResults != ''  ">Rules_results = #{rulesResults},</if>
+        </trim>
+        where Rules_Id = #{rulesId}
+    </update>
+
+	<delete id="deleteRegulationsById" parameterType="Integer">
+        delete from Regulations where Rules_Id = #{rulesId}
+    </delete>
+	
+    <delete id="deleteRegulationsByIds" parameterType="String">
+        delete from Regulations where Rules_Id in 
+        <foreach item="rulesId" collection="array" open="(" separator="," close=")">
+            #{rulesId}
+        </foreach>
+    </delete>
+</mapper>

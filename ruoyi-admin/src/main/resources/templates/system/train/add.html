@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('新增培训课件')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-train-add">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">培训课程标题：</label>
+				<div class="col-sm-8">
+					<input id="trainTitile" name="trainTitile" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">文件：</label>
+				<div class="file-container" style="display:inline-block;position:relative;overflow: hidden;vertical-align:middle">
+					<button class="btn btn-success fileinput-button" type="button">上传</button>
+					<input type="file" id="file" name = "zzFilename" onchange="loadFile(this.files[0])" style="position:absolute;top:0;left:0;font-size:34px; opacity:0">
+					<span name="file" id="filename" style="vertical-align: middle">未上传文件</span>
+				</div>
+			</div>
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">培训课件创建时间：</label>
+				<div class="col-sm-8">
+					<input id="trainCreatetime" name="trainCreatetime" class="form-control" type="text">
+				</div>
+			</div>-->
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">培训课件创建人：</label>
+				<div class="col-sm-8">
+					<input id="trainCreatename" name="trainCreatename" class="form-control" type="text">
+				</div>
+			</div>-->
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">培训课件备注：</label>
+				<div class="col-sm-8">
+					<input id="trainRemarks" name="trainRemarks" class="form-control" type="text">
+				</div>
+			</div>
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">培训课件备用：</label>
+				<div class="col-sm-8">
+					<input id="trainSpare" name="trainSpare" class="form-control" type="text">
+				</div>
+			</div>-->
+
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "system/train"
+		$("#form-train-add").validate({
+			rules:{
+				trainTitile:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-train-add').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

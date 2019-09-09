@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改装车喷洒作业')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-sprayingOperation-edit" th:object="${sprayingOperation}">
+            <input id="sprayId" name="sprayId" th:field="*{sprayId}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">装车点：</label>
+				<div class="col-sm-8">
+					<input id="sprayLocation" name="sprayLocation" th:field="*{sprayLocation}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">装车点id：</label>
+				<div class="col-sm-8">
+					<input id="sprayLocationId" name="sprayLocationId" th:field="*{sprayLocationId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">喷洒车数：</label>
+				<div class="col-sm-8">
+					<input id="sprayCarsCount" name="sprayCarsCount" th:field="*{sprayCarsCount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">冻车数：</label>
+				<div class="col-sm-8">
+					<input id="sprayDcCount" name="sprayDcCount" th:field="*{sprayDcCount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">冻车id：</label>
+				<div class="col-sm-8">
+					<input id="freezerId" name="freezerId" th:field="*{freezerId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">喷洒总量：</label>
+				<div class="col-sm-8">
+					<input id="spraySum" name="spraySum" th:field="*{spraySum}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">喷洒人：</label>
+				<div class="col-sm-8">
+					<input id="sprayName" name="sprayName" th:field="*{sprayName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">喷洒单位：</label>
+				<div class="col-sm-8">
+					<input id="sprayCompany" name="sprayCompany" th:field="*{sprayCompany}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input id="sprayCreatetime" name="sprayCreatetime" th:field="*{sprayCreatetime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">喷洒时间：</label>
+				<div class="col-sm-8">
+					<input id="sprayDatetime" name="sprayDatetime" th:field="*{sprayDatetime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">喷洒作业修改时间：</label>
+				<div class="col-sm-8">
+					<input id="sprayUpdatetime" name="sprayUpdatetime" th:field="*{sprayUpdatetime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">发站：</label>
+				<div class="col-sm-8">
+					<input id="sprayDeparture" name="sprayDeparture" th:field="*{sprayDeparture}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">到站：</label>
+				<div class="col-sm-8">
+					<input id="sprayStation" name="sprayStation" th:field="*{sprayStation}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">上级部门id：</label>
+				<div class="col-sm-8">
+					<input id="sprayDeptId" name="sprayDeptId" th:field="*{sprayDeptId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">喷洒类型：</label>
+				<div class="col-sm-8">
+					<input id="sprayType" name="sprayType" th:field="*{sprayType}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注：</label>
+				<div class="col-sm-8">
+					<input id="sprayRemarks" name="sprayRemarks" th:field="*{sprayRemarks}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建人：</label>
+				<div class="col-sm-8">
+					<input id="sprayCreatename" name="sprayCreatename" th:field="*{sprayCreatename}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "system/sprayingOperation";
+		$("#form-sprayingOperation-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-sprayingOperation-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

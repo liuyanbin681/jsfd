@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('新增总结上报')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-summary-add">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">总结上报标题：</label>
+				<div class="col-sm-8">
+					<input id="summaryTitle" name="summaryTitle" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">文件：</label>
+				<div class="file-container" style="display:inline-block;position:relative;overflow: hidden;vertical-align:middle">
+					<button class="btn btn-success fileinput-button" type="button">上传</button>
+					<input type="file" id="file" name = "zzFilename" onchange="loadFile(this.files[0])" style="position:absolute;top:0;left:0;font-size:34px; opacity:0">
+					<span name="file" id="filename" style="vertical-align: middle">未上传文件</span>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">总结上报备注：</label>
+				<div class="col-sm-8">
+					<input id="remarks" name="remarks" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "system/summary"
+		var icon = "<i class='fa fa-times-circle'></i> ";
+		$("#form-summary-add").validate({
+			rules:{
+				summaryTitle:{
+					required:true,
+				}
+			},
+			messages:{
+			summaryTitle: icon+'请输入标题'
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-summary-add').serialize());
+	        }
+	    }
+		function loadFile(file) {
+			console.log(ctx)
+			$("#filename").html(file.name);
+			$.ajax({
+				url: ctx +'system/summary/upload',
+				type: 'POST',
+				cache: false,
+				data: new FormData($('#form-summary-add')[0]),
+				processData: false,
+				contentType:false
+			}).done(function(res) {
+				let s = JSON.stringify(res);
+				let parse = JSON.parse(s);
+				if (parse.code==0){
+					$.modal.alertSuccess("操作成功")
+				}
+			}).fail(function(res) {});
+		}
+	</script>
+</body>
+</html>

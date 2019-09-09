@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改厂商明细')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-cDetailed-edit" th:object="${cDetailed}">
+            <input id="cjId" name="cjId" th:field="*{cjId}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">货用中心名称：</label>
+				<div class="col-sm-8">
+					<input id="cjDept" name="cjDept" th:field="*{cjDept}" class="form-control" type="text" disabled>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">营业部：</label>
+				<div class="col-sm-8">
+					<input id="cjYydept" name="cjYydept" th:field="*{cjYydept}" class="form-control" type="text" disabled>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">营业网点：</label>
+				<div class="col-sm-8">
+					<input id="cjYywd" name="cjYywd" th:field="*{cjYywd}" class="form-control" type="text" disabled>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">装车点：</label>
+				<div class="col-sm-8">
+					<input id="cjPalce" name="cjPalce" th:field="*{cjPalce}" class="form-control" type="text" disabled>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">当前出货量：</label>
+				<div class="col-sm-8">
+					<input id="Shipment" name="Shipment" th:field="*{cjShipment}" class="form-control" type="text" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">防冻液出货类型：</label>
+				<div class="col-sm-8">
+					<div class="radio-box" th:each="dict : ${@dict.getType('cj_Antifreeze_Shipment')}">
+						<input type="radio" th:id="${dict.dictCode}" name="cjType" th:value="${dict.dictValue}" th:checked="${dict.isDefault == 'Y' ? true : false}">
+						<label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">货量：</label>
+				<div class="col-sm-8">
+					<input id="cjShipment" name="cjShipment" class="form-control" type="text">
+				</div>
+			</div>
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">出货时间：</label>
+				<div class="col-sm-8">
+					<input id="cjOutTime" name="cjOutTime" th:field="*{cjOutTime}" class="form-control" type="text">
+				</div>
+			</div>-->
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注：</label>
+				<div class="col-sm-8">
+					<input id="cjRemarks" name="cjRemarks" th:field="*{cjRemarks}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+
+		var prefix = ctx + "system/cDetailed";
+
+		$("#form-cDetailed-edit").validate({
+			rules:{
+				cjShipment:{
+					required:true,
+				},
+				cjOutTime:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		layui.use('laydate', function() {
+			var laydate = layui.laydate;
+			laydate.render({
+				elem: '#time',
+				type: 'datetime'
+			});
+		});
+		function submitHandler() {
+			var type =$("input[name=type]").val();
+			var Shipment =$("input[name=Shipment]").val();
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-cDetailed-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

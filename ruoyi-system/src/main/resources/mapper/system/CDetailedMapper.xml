@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CDetailedMapper">
+
+    <resultMap type="CDetailed" id="CDetailedResult">
+        <result property="cjId"    column="cj_id"    />
+        <result property="cjDept"    column="cj_dept"    />
+        <result property="cjYydept"    column="cj_yydept"    />
+        <result property="cjYywd"    column="cj_yywd"    />
+        <result property="cjPalce"    column="cj_palce"    />
+        <result property="cjPalceId"    column="cj_palce_id"    />
+        <result property="cjShipment"    column="cj_shipment"    />
+        <result property="cjOutTime"    column="cj_out_time"    />
+        <result property="cjWriterTime"    column="cj_writer_time"    />
+        <result property="cjRemarks"    column="cj_remarks"    />
+        <result property="cjUserDeptId"    column="cj_user_dept_id"    />
+        <result property="cjCreate"    column="cj_create"    />
+        <result property="cjType"    column="cj_type"    />
+        <result property="cjConversionAp" column="cj_Conversion_ap"/>
+    </resultMap>
+
+    <sql id="selectCDetailedVo">
+        select cj_id, cj_dept, cj_yydept, cj_yywd, cj_palce, cj_palce_id, cj_shipment, cj_out_time, cj_writer_time, cj_remarks, cj_user_dept_id, cj_create, cj_type,cj_Conversion_ap from c_Detailed
+    </sql>
+<!--仅限供货商（厂家）使用-->
+    <select id="selectCDetailedList" parameterType="CDetailed" resultMap="CDetailedResult">
+        <include refid="selectCDetailedVo"/>
+        <where>
+            <if test="cjId != null "> and cj_id = #{cjId}</if>
+            <if test="cjDept != null  and cjDept != '' "> and cj_dept = #{cjDept}</if>
+            <if test="cjYydept != null  and cjYydept != '' "> and cj_yydept = #{cjYydept}</if>
+            <if test="cjYywd != null  and cjYywd != '' "> and cj_yywd = #{cjYywd}</if>
+            <if test="cjPalce != null  and cjPalce != '' "> and cj_palce = #{cjPalce}</if>
+            <if test="cjPalceId != null "> and cj_palce_id = #{cjPalceId}</if>
+            <if test="cjShipment != null "> and cj_shipment = #{cjShipment}</if>
+            <if test="cjOutTime != null "> and cj_out_time = #{cjOutTime}</if>
+            <if test="cjWriterTime != null "> and cj_writer_time = #{cjWriterTime}</if>
+            <if test="cjRemarks != null  and cjRemarks != '' "> and cj_remarks = #{cjRemarks}</if>
+            <if test="cjUserDeptId != null "> and cj_user_dept_id = #{cjUserDeptId}</if>
+            <if test="cjCreate != null  and cjCreate != '' "> and cj_create = #{cjCreate}</if>
+            <if test="cjType != null  and cjType != '' "> and cj_type = #{cjType}</if>
+        </where>
+    </select>
+    <!--统计分析时使用-->
+    <select id="selectCDetailedStatistics" parameterType="CDetailed" resultMap="CDetailedResult">
+        <include refid="selectCDetailedVo"/>
+        <where>
+            <if test="cjId != null "> and cj_id = #{cjId}</if>
+            <if test="cjDept != null  and cjDept != '' "> and cj_dept = #{cjDept}</if>
+            <if test="cjYydept != null  and cjYydept != '' "> and cj_yydept = #{cjYydept}</if>
+            <if test="cjYywd != null  and cjYywd != '' "> and cj_yywd = #{cjYywd}</if>
+            <if test="cjPalce != null  and cjPalce != '' "> and cj_palce = #{cjPalce}</if>
+            <if test="cjPalceId != null "> and cj_palce_id = #{cjPalceId}</if>
+            <if test="cjShipment != null "> and cj_shipment = #{cjShipment}</if>
+            <if test="cjOutTime != null "> and cj_out_time = #{cjOutTime}</if>
+            <if test="cjWriterTime != null "> and cj_writer_time = #{cjWriterTime}</if>
+            <if test="cjRemarks != null  and cjRemarks != '' "> and cj_remarks = #{cjRemarks}</if>
+            <if test="cjUserDeptId != null "> and cj_user_dept_id = #{cjUserDeptId}</if>
+            <if test="cjCreate != null  and cjCreate != '' "> and cj_create = #{cjCreate}</if>
+            <if test="cjType != null  and cjType != '' "> and cj_type = #{cjType}</if>
+        </where>
+    </select>
+
+    <select id="selectCDetailedById" parameterType="Integer" resultMap="CDetailedResult">
+        <include refid="selectCDetailedVo"/>
+        where cj_id = #{cjId}
+    </select>
+
+    <insert id="insertCDetailed" parameterType="CDetailed">
+        <selectKey keyProperty="cjId" resultType="Integer" order="BEFORE">
+            select seq_c_detailed.nextval as cjId from  DUAL
+        </selectKey>
+        insert into c_detailed
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cjId != null ">cj_id,</if>
+            <if test="cjDept != null  and cjDept != ''">cj_dept,</if>
+            <if test="cjYydept != null  and cjYydept != ''">cj_yydept,</if>
+            <if test="cjYywd != null  and cjYywd != ''">cj_yywd,</if>
+            <if test="cjPalce != null  and cjPalce != ''">cj_palce,</if>
+            <if test="cjPalceId != null ">cj_palce_id,</if>
+            <if test="cjShipment != null ">cj_shipment,</if>
+            <if test="cjOutTime != null ">cj_out_time,</if>
+            <if test="cjWriterTime != null ">cj_writer_time,</if>
+            <if test="cjRemarks != null  and cjRemarks != ''">cj_remarks,</if>
+            <if test="cjUserDeptId != null ">cj_user_dept_id,</if>
+            <if test="cjCreate != null  and cjCreate != ''">cj_create,</if>
+            <if test="cjType != null  and cjType != ''">cj_type,</if>
+            <if test="cjConversionAp != null ">cj_conversion_ap,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cjId != null ">#{cjId},</if>
+            <if test="cjDept != null  and cjDept != ''">#{cjDept},</if>
+            <if test="cjYydept != null  and cjYydept != ''">#{cjYydept},</if>
+            <if test="cjYywd != null  and cjYywd != ''">#{cjYywd},</if>
+            <if test="cjPalce != null  and cjPalce != ''">#{cjPalce},</if>
+            <if test="cjPalceId != null ">#{cjPalceId},</if>
+            <if test="cjShipment != null ">#{cjShipment},</if>
+            <if test="cjOutTime != null ">#{cjOutTime},</if>
+            <if test="cjWriterTime != null ">#{cjWriterTime},</if>
+            <if test="cjRemarks != null  and cjRemarks != ''">#{cjRemarks},</if>
+            <if test="cjUserDeptId != null ">#{cjUserDeptId},</if>
+            <if test="cjCreate != null  and cjCreate != ''">#{cjCreate},</if>
+            <if test="cjType != null  and cjType != ''">#{cjType},</if>
+            <if test="cjConversionAp != null ">#{cjConversionAp},</if>
+        </trim>
+    </insert>
+   <!-- <insert id="insertCDetailed" parameterType="CDetailed">
+        insert into c_Detailed
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cjId != null  ">cj_id,</if>
+            <if test="cjDept != null  and cjDept != ''  ">cj_dept,</if>
+            <if test="cjYydept != null  and cjYydept != ''  ">cj_yydept,</if>
+            <if test="cjYywd != null  and cjYywd != ''  ">cj_yywd,</if>
+            <if test="cjPalce != null  and cjPalce != ''  ">cj_palce,</if>
+            <if test="cjPalceId != null  ">cj_palce_id,</if>
+            <if test="cjShipment != null  ">cj_shipment,</if>
+            <if test="cjOutTime != null  ">cj_out_time,</if>
+            <if test="cjWriterTime != null  ">cj_writer_time,</if>
+            <if test="cjRemarks != null  and cjRemarks != ''  ">cj_remarks,</if>
+            <if test="cjUserDeptId != null  ">cj_user_dept_id,</if>
+            <if test="cjCreate != null  and cjCreate != ''  ">cj_create,</if>
+            <if test="cjType != null  and cjType != ''  ">cj_type,</if>
+            <if test="cjConversionAp != null  and cjConversionAp != ''  ">cj_Conversion_ap,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cjId != null  ">#{cjId},</if>
+            <if test="cjDept != null  and cjDept != ''  ">#{cjDept},</if>
+            <if test="cjYydept != null  and cjYydept != ''  ">#{cjYydept},</if>
+            <if test="cjYywd != null  and cjYywd != ''  ">#{cjYywd},</if>
+            <if test="cjPalce != null  and cjPalce != ''  ">#{cjPalce},</if>
+            <if test="cjPalceId != null  ">#{cjPalceId},</if>
+            <if test="cjShipment != null  ">#{cjShipment},</if>
+            <if test="cjOutTime != null  ">#{cjOutTime},</if>
+            <if test="cjWriterTime != null  ">#{cjWriterTime},</if>
+            <if test="cjRemarks != null  and cjRemarks != ''  ">#{cjRemarks},</if>
+            <if test="cjUserDeptId != null  ">#{cjUserDeptId},</if>
+            <if test="cjCreate != null  and cjCreate != ''  ">#{cjCreate},</if>
+            <if test="cjType != null  and cjType != ''  ">#{cjType},</if>
+            <if test="cjConversionAp != null  and cjConversionAp != ''  ">#{cjConversionAp},</if>
+        </trim>
+    </insert>-->
+    <update id="updateCDetailed" parameterType="CDetailed">
+        update c_Detailed
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cjDept != null  and cjDept != ''  ">cj_dept = #{cjDept},</if>
+            <if test="cjYydept != null  and cjYydept != ''  ">cj_yydept = #{cjYydept},</if>
+            <if test="cjYywd != null  and cjYywd != ''  ">cj_yywd = #{cjYywd},</if>
+            <if test="cjPalce != null  and cjPalce != ''  ">cj_palce = #{cjPalce},</if>
+            <if test="cjPalceId != null  ">cj_palce_id = #{cjPalceId},</if>
+            <if test="cjShipment != null  ">cj_shipment = #{cjShipment},</if>
+            <if test="cjOutTime != null  ">cj_out_time = #{cjOutTime},</if>
+            <if test="cjWriterTime != null  ">cj_writer_time = #{cjWriterTime},</if>
+            <if test="cjRemarks != null  and cjRemarks != ''  ">cj_remarks = #{cjRemarks},</if>
+            <if test="cjUserDeptId != null  ">cj_user_dept_id = #{cjUserDeptId},</if>
+            <if test="cjCreate != null  and cjCreate != ''  ">cj_create = #{cjCreate},</if>
+            <if test="cjType != null  and cjType != ''  ">cj_type = #{cjType},</if>
+            <if test="cjConversionAp != null  and cjConversionAp != ''  ">cj_Conversion_ap = #{cjConversionAp},</if>
+        </trim>
+        where cj_id = #{cjId}
+    </update>
+
+    <delete id="deleteCDetailedById" parameterType="Integer">
+        delete from c_Detailed where cj_id = #{cjId}
+    </delete>
+
+    <delete id="deleteCDetailedByIds" parameterType="String">
+        delete from c_Detailed where cj_id in
+        <foreach item="cjId" collection="array" open="(" separator="," close=")">
+            #{cjId}
+        </foreach>
+    </delete>
+
+</mapper>

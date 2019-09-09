@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SuperviseMapper">
+    
+    <resultMap type="Supervise" id="SuperviseResult">
+        <result property="suId"    column="su_id"    />
+        <result property="suTitle"    column="su_title"    />
+        <result property="suContent"    column="su_content"    />
+        <result property="suResult"    column="su_result"    />
+        <result property="suCreatedeptId"    column="su_createdept_id"    />
+        <result property="suCreatenameId"    column="su_createname_id"    />
+        <result property="suAccept"    column="su_accept"    />
+        <result property="suAcceptDeptId"    column="su_accept_dept_id"    />
+        <result property="suCreatetime"    column="su_createtime"    />
+        <result property="suUpdatetime"    column="su_updatetime"    />
+        <result property="suStatus"    column="su_status"    />
+        <result property="suFilename"    column="su_filename"    />
+    </resultMap>
+	
+	<sql id="selectSuperviseVo">
+        select su_id, su_title, su_content, su_result, su_createdept_id, su_createname_id, su_accept, su_accept_dept_id, su_createtime, su_updatetime, su_status, su_filename from supervise
+    </sql>
+	
+    <select id="selectSuperviseList" parameterType="Supervise" resultMap="SuperviseResult">
+        <include refid="selectSuperviseVo"/>
+        <where>  
+            <if test="suId != null "> and su_id = #{suId}</if>
+             <if test="suTitle != null  and suTitle != '' "> and su_title = #{suTitle}</if>
+             <if test="suContent != null  and suContent != '' "> and su_content = #{suContent}</if>
+             <if test="suResult != null  and suResult != '' "> and su_result = #{suResult}</if>
+             <if test="suCreatedeptId != null "> and su_createdept_id = #{suCreatedeptId}</if>
+             <if test="suCreatenameId != null "> and su_createname_id = #{suCreatenameId}</if>
+             <if test="suAccept != null  and suAccept != '' "> and su_accept = #{suAccept}</if>
+             <if test="suAcceptDeptId != null "> and su_accept_dept_id = #{suAcceptDeptId}</if>
+             <if test="suCreatetime != null "> and su_createtime = #{suCreatetime}</if>
+             <if test="suUpdatetime != null "> and su_updatetime = #{suUpdatetime}</if>
+             <if test="suStatus != null "> and su_status = #{suStatus}</if>
+             <if test="suFilename != null  and suFilename != '' "> and su_filename = #{suFilename}</if>
+         </where>
+    </select>
+    
+    <select id="selectSuperviseById" parameterType="Integer" resultMap="SuperviseResult">
+        <include refid="selectSuperviseVo"/>
+        where su_id = #{suId}
+    </select>
+        
+    <insert id="insertSupervise" parameterType="Supervise">
+        insert into supervise
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="suId != null  ">su_id,</if>
+			<if test="suTitle != null  and suTitle != ''  ">su_title,</if>
+			<if test="suContent != null  and suContent != ''  ">su_content,</if>
+			<if test="suResult != null  and suResult != ''  ">su_result,</if>
+			<if test="suCreatedeptId != null  ">su_createdept_id,</if>
+			<if test="suCreatenameId != null  ">su_createname_id,</if>
+			<if test="suAccept != null  and suAccept != ''  ">su_accept,</if>
+			<if test="suAcceptDeptId != null  ">su_accept_dept_id,</if>
+			<if test="suCreatetime != null  ">su_createtime,</if>
+			<if test="suUpdatetime != null  ">su_updatetime,</if>
+			<if test="suStatus != null  ">su_status,</if>
+			<if test="suFilename != null  and suFilename != ''  ">su_filename,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="suId != null  ">#{suId},</if>
+			<if test="suTitle != null  and suTitle != ''  ">#{suTitle},</if>
+			<if test="suContent != null  and suContent != ''  ">#{suContent},</if>
+			<if test="suResult != null  and suResult != ''  ">#{suResult},</if>
+			<if test="suCreatedeptId != null  ">#{suCreatedeptId},</if>
+			<if test="suCreatenameId != null  ">#{suCreatenameId},</if>
+			<if test="suAccept != null  and suAccept != ''  ">#{suAccept},</if>
+			<if test="suAcceptDeptId != null  ">#{suAcceptDeptId},</if>
+			<if test="suCreatetime != null  ">#{suCreatetime},</if>
+			<if test="suUpdatetime != null  ">#{suUpdatetime},</if>
+			<if test="suStatus != null  ">#{suStatus},</if>
+			<if test="suFilename != null  and suFilename != ''  ">#{suFilename},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateSupervise" parameterType="Supervise">
+        update supervise
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="suTitle != null  and suTitle != ''  ">su_title = #{suTitle},</if>
+            <if test="suContent != null  and suContent != ''  ">su_content = #{suContent},</if>
+            <if test="suResult != null  and suResult != ''  ">su_result = #{suResult},</if>
+            <if test="suCreatedeptId != null  ">su_createdept_id = #{suCreatedeptId},</if>
+            <if test="suCreatenameId != null  ">su_createname_id = #{suCreatenameId},</if>
+            <if test="suAccept != null  and suAccept != ''  ">su_accept = #{suAccept},</if>
+            <if test="suAcceptDeptId != null  ">su_accept_dept_id = #{suAcceptDeptId},</if>
+            <if test="suCreatetime != null  ">su_createtime = #{suCreatetime},</if>
+            <if test="suUpdatetime != null  ">su_updatetime = #{suUpdatetime},</if>
+            <if test="suStatus != null  ">su_status = #{suStatus},</if>
+            <if test="suFilename != null  and suFilename != ''  ">su_filename = #{suFilename},</if>
+        </trim>
+        where su_id = #{suId}
+    </update>
+
+	<delete id="deleteSuperviseById" parameterType="Integer">
+        delete from supervise where su_id = #{suId}
+    </delete>
+	
+    <delete id="deleteSuperviseByIds" parameterType="String">
+        delete from supervise where su_id in 
+        <foreach item="suId" collection="array" open="(" separator="," close=")">
+            #{suId}
+        </foreach>
+    </delete>
+    
+</mapper>

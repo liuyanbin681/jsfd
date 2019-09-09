@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.QualificationAuditMapper">
+    
+    <resultMap type="QualificationAudit" id="QualificationAuditResult">
+        <result property="zzId"    column="Zz_id"    />
+        <result property="zzManufacturer"    column="Zz_Manufacturer"    />
+        <result property="zzFilename"    column="Zz_filename"    />
+        <result property="zzCreatetime"    column="Zz_createtime"    />
+        <result property="zzUpdatetime"    column="Zz_updatetime"    />
+        <result property="zzUserId"    column="Zz_user_id"    />
+        <result property="zzRemarks"    column="Zz_remarks"    />
+        <result property="zzDeptId"    column="Zz_dept_id"    />
+        <result property="zzTitle"    column="Zz_title"    />
+    </resultMap>
+	
+	<sql id="selectQualificationAuditVo">
+        select Zz_id, Zz_Manufacturer, Zz_filename, Zz_createtime, Zz_updatetime, Zz_user_id, Zz_remarks, Zz_dept_id, Zz_title from Qualification_Audit
+    </sql>
+	
+    <select id="selectQualificationAuditList" parameterType="QualificationAudit" resultMap="QualificationAuditResult">
+        <include refid="selectQualificationAuditVo"/>
+        <where>  
+            <if test="zzId != null "> and Zz_id = #{zzId}</if>
+             <if test="zzManufacturer != null  and zzManufacturer != '' "> and Zz_Manufacturer = #{zzManufacturer}</if>
+             <if test="zzFilename != null  and zzFilename != '' "> and Zz_filename = #{zzFilename}</if>
+             <if test="zzCreatetime != null "> and Zz_createtime = #{zzCreatetime}</if>
+             <if test="zzUpdatetime != null "> and Zz_updatetime = #{zzUpdatetime}</if>
+             <if test="zzUserId != null "> and Zz_user_id = #{zzUserId}</if>
+             <if test="zzRemarks != null  and zzRemarks != '' "> and Zz_remarks = #{zzRemarks}</if>
+             <if test="zzDeptId != null "> and Zz_dept_id = #{zzDeptId}</if>
+             <if test="zzTitle != null  and zzTitle != '' "> and Zz_title = #{zzTitle}</if>
+         </where>
+    </select>
+    
+    <select id="selectQualificationAuditById" parameterType="Integer" resultMap="QualificationAuditResult">
+        <include refid="selectQualificationAuditVo"/>
+        where Zz_id = #{zzId}
+    </select>
+        
+    <insert id="insertQualificationAudit" parameterType="QualificationAudit">
+        insert into Qualification_Audit
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="zzId != null  ">Zz_id,</if>
+			<if test="zzManufacturer != null  and zzManufacturer != ''  ">Zz_Manufacturer,</if>
+			<if test="zzFilename != null  and zzFilename != ''  ">Zz_filename,</if>
+			<if test="zzCreatetime != null  ">Zz_createtime,</if>
+			<if test="zzUpdatetime != null  ">Zz_updatetime,</if>
+			<if test="zzUserId != null  ">Zz_user_id,</if>
+			<if test="zzRemarks != null  and zzRemarks != ''  ">Zz_remarks,</if>
+			<if test="zzDeptId != null  ">Zz_dept_id,</if>
+			<if test="zzTitle != null  and zzTitle != ''  ">Zz_title,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="zzId != null  ">#{zzId},</if>
+			<if test="zzManufacturer != null  and zzManufacturer != ''  ">#{zzManufacturer},</if>
+			<if test="zzFilename != null  and zzFilename != ''  ">#{zzFilename},</if>
+			<if test="zzCreatetime != null  ">#{zzCreatetime},</if>
+			<if test="zzUpdatetime != null  ">#{zzUpdatetime},</if>
+			<if test="zzUserId != null  ">#{zzUserId},</if>
+			<if test="zzRemarks != null  and zzRemarks != ''  ">#{zzRemarks},</if>
+			<if test="zzDeptId != null  ">#{zzDeptId},</if>
+			<if test="zzTitle != null  and zzTitle != ''  ">#{zzTitle},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateQualificationAudit" parameterType="QualificationAudit">
+        update Qualification_Audit
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zzManufacturer != null  and zzManufacturer != ''  ">Zz_Manufacturer = #{zzManufacturer},</if>
+            <if test="zzFilename != null  and zzFilename != ''  ">Zz_filename = #{zzFilename},</if>
+            <if test="zzCreatetime != null  ">Zz_createtime = #{zzCreatetime},</if>
+            <if test="zzUpdatetime != null  ">Zz_updatetime = #{zzUpdatetime},</if>
+            <if test="zzUserId != null  ">Zz_user_id = #{zzUserId},</if>
+            <if test="zzRemarks != null  and zzRemarks != ''  ">Zz_remarks = #{zzRemarks},</if>
+            <if test="zzDeptId != null  ">Zz_dept_id = #{zzDeptId},</if>
+            <if test="zzTitle != null  and zzTitle != ''  ">Zz_title = #{zzTitle},</if>
+        </trim>
+        where Zz_id = #{zzId}
+    </update>
+
+	<delete id="deleteQualificationAuditById" parameterType="Integer">
+        delete from Qualification_Audit where Zz_id = #{zzId}
+    </delete>
+	
+    <delete id="deleteQualificationAuditByIds" parameterType="String">
+        delete from Qualification_Audit where Zz_id in 
+        <foreach item="zzId" collection="array" open="(" separator="," close=")">
+            #{zzId}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CStockMapper">
+    
+    <resultMap type="CStock" id="CStockResult">
+        <result property="stockId"    column="Stock_id"    />
+        <result property="stockHyzxDept"    column="Stock_hyzx_dept"    />
+        <result property="stockYybDept"    column="Stock_yyb_dept"    />
+        <result property="stockYywdDept"    column="Stock_yywd_dept"    />
+        <result property="stockPalceId"    column="Stock_palce_id"    />
+        <result property="stockPalce"    column="Stock_palce"    />
+        <result property="stockSurplus"    column="Stock_Surplus"    />
+        <result property="stockCreate"    column="Stock_create"    />
+        <result property="stockUserDeptId"    column="Stock_user_dept_id"    />
+        <result property="stockCreatetime"    column="Stock_createtime"    />
+        <result property="stockUpdatetime"    column="Stock_updatetime"    />
+    </resultMap>
+	
+	<sql id="selectCStockVo">
+        select Stock_id, Stock_hyzx_dept, Stock_yyb_dept, Stock_yywd_dept, Stock_palce_id, Stock_palce, Stock_Surplus, Stock_create, Stock_user_dept_id, Stock_createtime, Stock_updatetime from c_Stock
+    </sql>
+	
+    <select id="selectCStockList" parameterType="CStock" resultMap="CStockResult">
+        <include refid="selectCStockVo"/>
+        <where>  
+            <if test="stockId != null "> and Stock_id = #{stockId}</if>
+             <if test="stockHyzxDept != null  and stockHyzxDept != '' "> and Stock_hyzx_dept = #{stockHyzxDept}</if>
+             <if test="stockYybDept != null  and stockYybDept != '' "> and Stock_yyb_dept = #{stockYybDept}</if>
+             <if test="stockYywdDept != null  and stockYywdDept != '' "> and Stock_yywd_dept = #{stockYywdDept}</if>
+             <if test="stockPalceId != null "> and Stock_palce_id = #{stockPalceId}</if>
+             <if test="stockPalce != null "> and Stock_palce = #{stockPalce}</if>
+             <if test="stockSurplus != null "> and Stock_Surplus = #{stockSurplus}</if>
+             <if test="stockCreate != null  and stockCreate != '' "> and Stock_create = #{stockCreate}</if>
+             <if test="stockUserDeptId != null "> and Stock_user_dept_id = #{stockUserDeptId}</if>
+             <if test="stockCreatetime != null "> and Stock_createtime = #{stockCreatetime}</if>
+             <if test="stockUpdatetime != null "> and Stock_updatetime = #{stockUpdatetime}</if>
+         </where>
+    </select>
+    
+    <select id="selectCStockById" parameterType="Integer" resultMap="CStockResult">
+        <include refid="selectCStockVo"/>
+        where Stock_id = #{stockId}
+    </select>
+    <!--根据装车点查询-->
+    <select id="selectsByStockPalceId" parameterType="Integer" resultMap="CStockResult">
+        <include refid="selectCStockVo"/>
+        where Stock_palce_id = #{stockPalceId}
+    </select>
+    <!--根据装车点是否存在于统计表-->
+    <select id="selectsBySPalceId" parameterType="Integer" resultType="int">
+       SELECT COUNT(c.Stock_palce_id) FROM c_Stock c WHERE c.Stock_palce_id =#{stockPalceId}
+    </select>
+    <insert id="insertCStock" parameterType="CStock">
+        <selectKey keyProperty="stockId" resultType="Integer" order="BEFORE">
+            SELECT seq_c_stock.NEXTVAL as stockId FROM DUAL
+        </selectKey>
+        insert into c_stock
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stockId != null ">stock_id,</if>
+            <if test="stockHyzxDept != null  and stockHyzxDept != ''">stock_hyzx_dept,</if>
+            <if test="stockYybDept != null  and stockYybDept != ''">stock_yyb_dept,</if>
+            <if test="stockYywdDept != null  and stockYywdDept != ''">stock_yywd_dept,</if>
+            <if test="stockPalceId != null ">stock_palce_id,</if>
+            <if test="stockPalce != null  and stockPalce != ''">stock_palce,</if>
+            <if test="stockSurplus != null ">stock_surplus,</if>
+            <if test="stockCreate != null  and stockCreate != ''">stock_create,</if>
+            <if test="stockUserDeptId != null ">stock_user_dept_id,</if>
+            <if test="stockCreatetime != null ">stock_createtime,</if>
+            <if test="stockUpdatetime != null ">stock_updatetime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stockId != null ">#{stockId},</if>
+            <if test="stockHyzxDept != null  and stockHyzxDept != ''">#{stockHyzxDept},</if>
+            <if test="stockYybDept != null  and stockYybDept != ''">#{stockYybDept},</if>
+            <if test="stockYywdDept != null  and stockYywdDept != ''">#{stockYywdDept},</if>
+            <if test="stockPalceId != null ">#{stockPalceId},</if>
+            <if test="stockPalce != null  and stockPalce != ''">#{stockPalce},</if>
+            <if test="stockSurplus != null ">#{stockSurplus},</if>
+            <if test="stockCreate != null  and stockCreate != ''">#{stockCreate},</if>
+            <if test="stockUserDeptId != null ">#{stockUserDeptId},</if>
+            <if test="stockCreatetime != null ">#{stockCreatetime},</if>
+            <if test="stockUpdatetime != null ">#{stockUpdatetime},</if>
+        </trim>
+    </insert>
+	 
+    <update id="updateCStock" parameterType="CStock">
+        update c_Stock
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stockHyzxDept != null  and stockHyzxDept != ''  ">Stock_hyzx_dept = #{stockHyzxDept},</if>
+            <if test="stockYybDept != null  and stockYybDept != ''  ">Stock_yyb_dept = #{stockYybDept},</if>
+            <if test="stockYywdDept != null  and stockYywdDept != ''  ">Stock_yywd_dept = #{stockYywdDept},</if>
+            <if test="stockPalceId != null  ">Stock_palce_id = #{stockPalceId},</if>
+            <if test="stockPalce != null  ">Stock_palce = #{stockPalce},</if>
+            <if test="stockSurplus != null  ">Stock_Surplus = #{stockSurplus},</if>
+            <if test="stockCreate != null  and stockCreate != ''  ">Stock_create = #{stockCreate},</if>
+            <if test="stockUserDeptId != null  ">Stock_user_dept_id = #{stockUserDeptId},</if>
+            <if test="stockCreatetime != null  ">Stock_createtime = #{stockCreatetime},</if>
+            <if test="stockUpdatetime != null  ">Stock_updatetime = #{stockUpdatetime},</if>
+        </trim>
+        where Stock_id = #{stockId}
+    </update>
+    <!--根据装车点进行对数据进行更新进行修改-->
+    <update id="updateByPalceId" parameterType="CStock">
+        update c_Stock
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stockHyzxDept != null  and stockHyzxDept != ''  ">Stock_hyzx_dept = #{stockHyzxDept},</if>
+            <if test="stockYybDept != null  and stockYybDept != ''  ">Stock_yyb_dept = #{stockYybDept},</if>
+            <if test="stockYywdDept != null  and stockYywdDept != ''  ">Stock_yywd_dept = #{stockYywdDept},</if>
+            <if test="stockPalceId != null  ">Stock_palce_id = #{stockPalceId},</if>
+            <if test="stockPalce != null  ">Stock_palce = #{stockPalce},</if>
+            <if test="stockSurplus != null  ">Stock_Surplus = #{stockSurplus},</if>
+            <if test="stockCreate != null  and stockCreate != ''  ">Stock_create = #{stockCreate},</if>
+            <if test="stockUserDeptId != null  ">Stock_user_dept_id = #{stockUserDeptId},</if>
+            <if test="stockCreatetime != null  ">Stock_createtime = #{stockCreatetime},</if>
+            <if test="stockUpdatetime != null  ">Stock_updatetime = #{stockUpdatetime},</if>
+        </trim>
+        where Stock_palce_id = #{stockPalceId}
+    </update>
+	<delete id="deleteCStockById" parameterType="Integer">
+        delete from c_Stock where Stock_id = #{stockId}
+    </delete>
+	
+    <delete id="deleteCStockByIds" parameterType="String">
+        delete from c_Stock where Stock_id in 
+        <foreach item="stockId" collection="array" open="(" separator="," close=")">
+            #{stockId}
+        </foreach>
+    </delete>
+    
+</mapper>

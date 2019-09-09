@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改总结上报')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-summary-edit" th:object="${summary}">
+            <input id="sId" name="sId" th:field="*{sId}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">总结上报文件名称：</label>
+				<div class="col-sm-8">
+					<input id="summaryFile" name="summaryFile" th:field="*{summaryFile}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">总结上报创建人：</label>
+				<div class="col-sm-8">
+					<input id="summaryCreatename" name="summaryCreatename" th:field="*{summaryCreatename}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">总结上报部门：</label>
+				<div class="col-sm-8">
+					<input id="summaryCreateDept" name="summaryCreateDept" th:field="*{summaryCreateDept}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">总结上报单位：</label>
+				<div class="col-sm-8">
+					<input id="summaryCreateUnits" name="summaryCreateUnits" th:field="*{summaryCreateUnits}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input id="summaryCreateTime" name="summaryCreateTime" th:field="*{summaryCreateTime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">总结上报备注：</label>
+				<div class="col-sm-8">
+					<input id="remarks" name="remarks" th:field="*{remarks}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">总结上报标题：</label>
+				<div class="col-sm-8">
+					<input id="summaryTitle" name="summaryTitle" th:field="*{summaryTitle}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">总结上报状态：</label>
+				<div class="col-sm-8">
+					<input id="status" name="status" th:field="*{status}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">总结上报部门id：</label>
+				<div class="col-sm-8">
+					<input id="summaryDeptId" name="summaryDeptId" th:field="*{summaryDeptId}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "system/summary";
+		$("#form-summary-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-summary-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

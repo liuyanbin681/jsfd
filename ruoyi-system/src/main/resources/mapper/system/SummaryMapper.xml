@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SummaryMapper">
+    
+    <resultMap type="Summary" id="SummaryResult">
+        <result property="sId"    column="s_id"    />
+        <result property="summaryFile"    column="Summary_file"    />
+        <result property="summaryCreatename"    column="Summary_createname"    />
+        <result property="summaryCreateDept"    column="Summary_create_dept"    />
+        <result property="summaryCreateUnits"    column="Summary_create_units"    />
+        <result property="summaryCreateTime"    column="Summary_create_time"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="summaryTitle"    column="Summary_title"    />
+        <result property="status"    column="status"    />
+        <result property="summaryDeptId"    column="Summary_dept_id"    />
+    </resultMap>
+	
+	<sql id="selectSummaryVo">
+        select s_id, Summary_file, Summary_createname, Summary_create_dept, Summary_create_units, Summary_create_time, remarks, Summary_title, status, Summary_dept_id from Summary
+    </sql>
+	
+    <select id="selectSummaryList" parameterType="Summary" resultMap="SummaryResult">
+        <include refid="selectSummaryVo"/>
+        <where>  
+            <if test="sId != null "> and s_id = #{sId}</if>
+             <if test="summaryFile != null  and summaryFile != '' "> and Summary_file = #{summaryFile}</if>
+             <if test="summaryCreatename != null  and summaryCreatename != '' "> and Summary_createname = #{summaryCreatename}</if>
+             <if test="summaryCreateDept != null  and summaryCreateDept != '' "> and Summary_create_dept = #{summaryCreateDept}</if>
+             <if test="summaryCreateUnits != null  and summaryCreateUnits != '' "> and Summary_create_units = #{summaryCreateUnits}</if>
+             <if test="summaryCreateTime != null "> and Summary_create_time = #{summaryCreateTime}</if>
+             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+             <if test="summaryTitle != null  and summaryTitle != '' "> and Summary_title = #{summaryTitle}</if>
+             <if test="status != null "> and status = #{status}</if>
+             <if test="summaryDeptId != null "> and Summary_dept_id = #{summaryDeptId}</if>
+         </where>
+    </select>
+    
+    <select id="selectSummaryById" parameterType="Integer" resultMap="SummaryResult">
+        <include refid="selectSummaryVo"/>
+        where s_id = #{sId}
+    </select>
+        
+    <insert id="insertSummary" parameterType="Summary">
+        insert into Summary
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="sId != null  ">s_id,</if>
+			<if test="summaryFile != null  and summaryFile != ''  ">Summary_file,</if>
+			<if test="summaryCreatename != null  and summaryCreatename != ''  ">Summary_createname,</if>
+			<if test="summaryCreateDept != null  and summaryCreateDept != ''  ">Summary_create_dept,</if>
+			<if test="summaryCreateUnits != null  and summaryCreateUnits != ''  ">Summary_create_units,</if>
+			<if test="summaryCreateTime != null  ">Summary_create_time,</if>
+			<if test="remarks != null  and remarks != ''  ">remarks,</if>
+			<if test="summaryTitle != null  and summaryTitle != ''  ">Summary_title,</if>
+			<if test="status != null  ">status,</if>
+			<if test="summaryDeptId != null  ">Summary_dept_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="sId != null  ">#{sId},</if>
+			<if test="summaryFile != null  and summaryFile != ''  ">#{summaryFile},</if>
+			<if test="summaryCreatename != null  and summaryCreatename != ''  ">#{summaryCreatename},</if>
+			<if test="summaryCreateDept != null  and summaryCreateDept != ''  ">#{summaryCreateDept},</if>
+			<if test="summaryCreateUnits != null  and summaryCreateUnits != ''  ">#{summaryCreateUnits},</if>
+			<if test="summaryCreateTime != null  ">#{summaryCreateTime},</if>
+			<if test="remarks != null  and remarks != ''  ">#{remarks},</if>
+			<if test="summaryTitle != null  and summaryTitle != ''  ">#{summaryTitle},</if>
+			<if test="status != null  ">#{status},</if>
+			<if test="summaryDeptId != null  ">#{summaryDeptId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateSummary" parameterType="Summary">
+        update Summary
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="summaryFile != null  and summaryFile != ''  ">Summary_file = #{summaryFile},</if>
+            <if test="summaryCreatename != null  and summaryCreatename != ''  ">Summary_createname = #{summaryCreatename},</if>
+            <if test="summaryCreateDept != null  and summaryCreateDept != ''  ">Summary_create_dept = #{summaryCreateDept},</if>
+            <if test="summaryCreateUnits != null  and summaryCreateUnits != ''  ">Summary_create_units = #{summaryCreateUnits},</if>
+            <if test="summaryCreateTime != null  ">Summary_create_time = #{summaryCreateTime},</if>
+            <if test="remarks != null  and remarks != ''  ">remarks = #{remarks},</if>
+            <if test="summaryTitle != null  and summaryTitle != ''  ">Summary_title = #{summaryTitle},</if>
+            <if test="status != null  ">status = #{status},</if>
+            <if test="summaryDeptId != null  ">Summary_dept_id = #{summaryDeptId},</if>
+        </trim>
+        where s_id = #{sId}
+    </update>
+
+	<delete id="deleteSummaryById" parameterType="Integer">
+        delete from Summary where s_id = #{sId}
+    </delete>
+	
+    <delete id="deleteSummaryByIds" parameterType="String">
+        delete from Summary where s_id in 
+        <foreach item="sId" collection="array" open="(" separator="," close=")">
+            #{sId}
+        </foreach>
+    </delete>
+    
+</mapper>

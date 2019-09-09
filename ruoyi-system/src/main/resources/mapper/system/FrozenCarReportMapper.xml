@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.FrozenCarReportMapper">
+
+    <resultMap type="FrozenCarReport" id="FrozenCarReportResult">
+        <result property="fdReportId"    column="fd_report_id"    />
+        <result property="fdReporNum"    column="Fd_Repor_num"    />
+        <result property="fdReporDatetime"    column="Fd_Repor_datetime"    />
+        <result property="fdReporNo"    column="Fd_Repor_No"    />
+        <result property="fdReporLicense"    column="Fd_Repor_License"    />
+        <result property="fdReporFz"    column="Fd_Repor_fz"    />
+        <result property="fdReporDz"    column="Fd_Repor_dz"    />
+        <result property="fdReporPl"    column="Fd_Repor_pl"    />
+        <result property="fdReporPDeptId"    column="Fd_Repor_p_dept_id"    />
+        <result property="fdReporDeptId"    column="Fd_Repor_dept_id"    />
+        <result property="fdReporName"    column="Fd_Repor_name"    />
+        <result property="fdReporDjhd"    column="Fd_Repor_djhd"    />
+        <result property="fdReporCount"    column="Fd_Repor_count"    />
+        <result property="fdReporImpact"    column="Fd_Repor_Impact"    />
+        <result property="fdReporImage"    column="Fd_Repor_image"    />
+        <result property="fdCreatetime"    column="Fd_createtime"    />
+        <result property="fdUpdatetime"    column="Fd_updatetime"    />
+        <result property="fdRemarks"    column="Fd_remarks"    />
+        <result property="fdReporYywdDeptId"    column="Fd_Repor_yywd_dept_id"    />
+        <result property="fdReporDelFlag"   column="Fd_Repor_del_flag"    />
+        <result property="fdVerify"    column="Fd_verify"    />
+        <result property="fdSpray"    column="Fd_Spray"    />
+        <result property="fdRelieve"    column="Fd_Relieve"    />
+        <result property="fdManualRelieveDatetime"    column="Fd_manual_Relieve_datetime"    />
+        <result property="fdEstimateRelieveDatetime"    column="Fd_Estimate_Relieve_datetime"    />
+        <association property="sprayingOperation" column="Spray_datetime" javaType="SprayingOperation" resultMap="SprayingOperationResult"/>
+    </resultMap>
+    <resultMap type="SprayingOperation" id="SprayingOperationResult">
+        <result property="sprayId"    column="Spray_id"    />
+        <result property="sprayLocation"    column="Spray_Location"    />
+        <result property="sprayLocationId"    column="Spray_Location_id"    />
+        <result property="sprayCarsCount"    column="Spray_cars_count"    />
+        <result property="sprayDcCount"    column="Spray_dc_count"    />
+        <result property="freezerId"    column="Freezer_id"    />
+        <result property="spraySum"    column="Spray_sum"    />
+        <result property="sprayName"    column="Spray_name"    />
+        <result property="sprayCompany"    column="Spray_Company"    />
+        <result property="sprayCreatetime"    column="Spray_createtime"    />
+        <result property="sprayDatetime"    column="Spray_datetime"    />
+        <result property="sprayUpdatetime"    column="Spray_updatetime"    />
+        <result property="sprayDeparture"    column="Spray_Departure"    />
+        <result property="sprayStation"    column="Spray_station"    />
+        <result property="sprayDeptId"    column="Spray_dept_id"    />
+        <result property="sprayType"    column="Spray_type"    />
+        <result property="sprayRemarks"    column="Spray_remarks"    />
+        <result property="sprayCreatename"    column="Spray_createname"    />
+        <result property="sprayDeptPId"    column="Spray_dept_p_id"    />
+    </resultMap>
+    <!--查询喷洒冻车数-->
+    <sql id="selectSprayingByOperationCounts">
+SELECT
+	f.Fd_Report_id,
+	f.Fd_createtime,
+	f.Fd_Estimate_Relieve_datetime,
+	f.Fd_manual_Relieve_datetime,
+	f.Fd_Relieve,
+	f.Fd_remarks,
+	f.Fd_Repor_count,
+	f.Fd_Repor_datetime,
+	f.Fd_Repor_dept_id,
+	f.Fd_Repor_djhd,
+	f.Fd_Repor_dz,
+	f.Fd_Repor_fz,
+	f.Fd_Repor_Impact,
+	f.Fd_Repor_License,
+	f.Fd_Spray,
+	f.Fd_Repor_name,
+	f.Fd_Repor_No,
+	f.Fd_Repor_num,
+	f.Fd_verify,
+	s.Spray_datetime
+FROM
+	Frozen_car_Report f
+INNER JOIN Spraying_operation s ON s.Freezer_id = f.Fd_Report_id
+	</sql>
+   <!--到站核实-->
+    <sql id="selectVerifyCarReportVo">
+        select Fd_Report_id, Fd_Repor_num, Fd_Repor_datetime, Fd_Repor_No, Fd_Repor_License, Fd_Repor_fz, Fd_Repor_dz, Fd_Repor_pl, Fd_Repor_p_dept_id, Fd_Repor_dept_id, Fd_Repor_name, Fd_Repor_djhd, Fd_Repor_count, Fd_Repor_Impact, Fd_Repor_image, Fd_createtime, Fd_updatetime, Fd_remarks, Fd_Repor_yywd_dept_id, Fd_Repor_del_flag, Fd_verify, Fd_Spray, Fd_Relieve, Fd_manual_Relieve_datetime, Fd_Estimate_Relieve_datetime from Frozen_car_Report
+    </sql>
+   <!--冻车上报-->
+    <sql id="selectFrozenCarReportVo">
+        select Fd_Report_id, Fd_Repor_num, Fd_Repor_datetime, Fd_Repor_No, Fd_Repor_License, Fd_Repor_fz, Fd_Repor_dz, Fd_Repor_pl, Fd_Repor_p_dept_id, Fd_Repor_dept_id, Fd_Repor_name, Fd_Repor_djhd, Fd_Repor_count, Fd_Repor_Impact, Fd_Repor_image, Fd_createtime, Fd_updatetime, Fd_remarks, Fd_Repor_yywd_dept_id,Fd_Spray, Fd_Repor_del_flag from Frozen_car_Report
+    </sql>
+    <!--冻车上报表-->
+    <select id="selectFrozenCarReportList" parameterType="FrozenCarReport" resultMap="FrozenCarReportResult">
+        <include refid="selectFrozenCarReportVo"/>
+        <where>
+            <if test="fdReportId != null "> and Fd_Report_id = #{fdReportId}</if>
+            <if test="fdReporNum != null  and fdReporNum != '' "> and Fd_Repor_num = #{fdReporNum}</if>
+            <if test="fdReporDatetime != null "> and Fd_Repor_datetime = #{fdReporDatetime}</if>
+            <if test="fdReporNo != null "> and Fd_Repor_No = #{fdReporNo}</if>
+            <if test="fdReporLicense != null  and fdReporLicense != '' "> and Fd_Repor_License = #{fdReporLicense}</if>
+            <if test="fdReporFz != null  and fdReporFz != '' "> and Fd_Repor_fz = #{fdReporFz}</if>
+            <if test="fdReporDz != null  and fdReporDz != '' "> and Fd_Repor_dz = #{fdReporDz}</if>
+            <if test="fdReporPl != null "> and Fd_Repor_pl = #{fdReporPl}</if>
+            <if test="fdReporPDeptId != null "> and Fd_Repor_p_dept_id = #{fdReporPDeptId}</if>
+            <if test="fdReporDeptId != null "> and Fd_Repor_dept_id = #{fdReporDeptId}</if>
+            <if test="fdReporName != null  and fdReporName != '' "> and Fd_Repor_name = #{fdReporName}</if>
+            <if test="fdReporDjhd != null  and fdReporDjhd != '' "> and Fd_Repor_djhd = #{fdReporDjhd}</if>
+            <if test="fdReporCount != null  and fdReporCount != '' "> and Fd_Repor_count = #{fdReporCount}</if>
+            <if test="fdReporImpact != null "> and Fd_Repor_Impact = #{fdReporImpact}</if>
+            <if test="fdReporImage != null  and fdReporImage != '' "> and Fd_Repor_image = #{fdReporImage}</if>
+            <if test="fdCreatetime != null "> and Fd_createtime = #{fdCreatetime}</if>
+            <if test="fdUpdatetime != null "> and Fd_updatetime = #{fdUpdatetime}</if>
+            <if test="fdRemarks != null  and fdRemarks != '' "> and Fd_remarks = #{fdRemarks}</if>
+            <if test="fdReporYywdDeptId != null "> and Fd_Repor_yywd_dept_id = #{fdReporYywdDeptId}</if>
+            <if test="fdReporDelFlag != null "> and Fd_Repor_del_flag = #{fdReporDelFlag}</if>
+        </where>
+        where Fd_Repor_del_flag= 0
+    </select>
+<!--冻车核实表-->
+    <select id="selectVerifyCarReportList" parameterType="FrozenCarReport" resultMap="FrozenCarReportResult">
+        <include refid="selectVerifyCarReportVo"/>
+        <where>
+            <if test="fdReportId != null "> and Fd_Report_id = #{fdReportId}</if>
+            <if test="fdReporNum != null  and fdReporNum != '' "> and Fd_Repor_num = #{fdReporNum}</if>
+            <if test="fdReporDatetime != null "> and Fd_Repor_datetime = #{fdReporDatetime}</if>
+            <if test="fdReporNo != null "> and Fd_Repor_No = #{fdReporNo}</if>
+            <if test="fdReporLicense != null  and fdReporLicense != '' "> and Fd_Repor_License = #{fdReporLicense}</if>
+            <if test="fdReporFz != null  and fdReporFz != '' "> and Fd_Repor_fz = #{fdReporFz}</if>
+            <if test="fdReporDz != null  and fdReporDz != '' "> and Fd_Repor_dz = #{fdReporDz}</if>
+            <if test="fdReporPl != null "> and Fd_Repor_pl = #{fdReporPl}</if>
+            <if test="fdReporPDeptId != null "> and Fd_Repor_p_dept_id = #{fdReporPDeptId}</if>
+            <if test="fdReporDeptId != null "> and Fd_Repor_dept_id = #{fdReporDeptId}</if>
+            <if test="fdReporName != null  and fdReporName != '' "> and Fd_Repor_name = #{fdReporName}</if>
+            <if test="fdReporDjhd != null  and fdReporDjhd != '' "> and Fd_Repor_djhd = #{fdReporDjhd}</if>
+            <if test="fdReporCount != null  and fdReporCount != '' "> and Fd_Repor_count = #{fdReporCount}</if>
+            <if test="fdReporImpact != null "> and Fd_Repor_Impact = #{fdReporImpact}</if>
+            <if test="fdReporImage != null  and fdReporImage != '' "> and Fd_Repor_image = #{fdReporImage}</if>
+            <if test="fdCreatetime != null "> and Fd_createtime = #{fdCreatetime}</if>
+            <if test="fdUpdatetime != null "> and Fd_updatetime = #{fdUpdatetime}</if>
+            <if test="fdRemarks != null  and fdRemarks != '' "> and Fd_remarks = #{fdRemarks}</if>
+            <if test="fdReporYywdDeptId != null "> and Fd_Repor_yywd_dept_id = #{fdReporYywdDeptId}</if>
+            <if test="fdReporDelFlag != null "> and Fd_Repor_del_flag = #{fdReporDelFlag}</if>
+            <if test="fdVerify != null  and fdVerify != '' "> and Fd_verify = #{fdVerify}</if>
+            <if test="fdSpray != null  and fdSpray != '' "> and Fd_Spray = #{fdSpray}</if>
+            <if test="fdRelieve != null  and fdRelieve != '' "> and Fd_Relieve = #{fdRelieve}</if>
+            <if test="fdManualRelieveDatetime != null "> and Fd_manual_Relieve_datetime = #{fdManualRelieveDatetime}</if>
+            <if test="fdEstimateRelieveDatetime != null "> and Fd_Estimate_Relieve_datetime = #{fdEstimateRelieveDatetime}</if>
+        </where>
+    </select>
+    <select id="selectBySprayingOperationCounts" parameterType="java.lang.Integer" resultMap="FrozenCarReportResult">
+        <include refid="selectSprayingByOperationCounts"/>
+        where s.Freezer_id=#{freezerId}
+    </select>
+    <select id="selectFrozenCarReportById" parameterType="Integer" resultMap="FrozenCarReportResult">
+        <include refid="selectFrozenCarReportVo"/>
+        where Fd_Report_id = #{fdReportId}
+    </select>
+    <select id="selectFrozenCarReportListById" parameterType="Integer" resultMap="FrozenCarReportResult">
+        SELECT * FROM Frozen_car_Report f INNER JOIN  Spraying_operation s ON f.Fd_Report_id =s.Freezer_id where f.Fd_Report_id= #{fdReportId}
+    </select>
+    <insert id="insertFrozenCarReport" parameterType="FrozenCarReport">
+        <selectKey keyProperty="fdReportId" resultType="Integer" order="BEFORE">
+            select SEQ_FROZEN_CAR_REPORT.NEXTVAL as fdReportId from  DUAL
+        </selectKey>
+        insert into Frozen_car_Report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fdReportId != null  ">Fd_Report_id,</if>
+            <if test="fdReporNum != null  and fdReporNum != ''  ">Fd_Repor_num,</if>
+            <if test="fdReporDatetime != null  ">Fd_Repor_datetime,</if>
+            <if test="fdReporNo != null  ">Fd_Repor_No,</if>
+            <if test="fdReporLicense != null  and fdReporLicense != ''  ">Fd_Repor_License,</if>
+            <if test="fdReporFz != null  and fdReporFz != ''  ">Fd_Repor_fz,</if>
+            <if test="fdReporDz != null  and fdReporDz != ''  ">Fd_Repor_dz,</if>
+            <if test="fdReporPl != null  ">Fd_Repor_pl,</if>
+            <if test="fdReporPDeptId != null  ">Fd_Repor_p_dept_id,</if>
+            <if test="fdReporDeptId != null  ">Fd_Repor_dept_id,</if>
+            <if test="fdReporName != null  and fdReporName != ''  ">Fd_Repor_name,</if>
+            <if test="fdReporDjhd != null  and fdReporDjhd != ''  ">Fd_Repor_djhd,</if>
+            <if test="fdReporCount != null  and fdReporCount != ''  ">Fd_Repor_count,</if>
+            <if test="fdReporImpact != null  ">Fd_Repor_Impact,</if>
+            <if test="fdReporImage != null  and fdReporImage != ''  ">Fd_Repor_image,</if>
+            <if test="fdCreatetime != null  ">Fd_createtime,</if>
+            <if test="fdUpdatetime != null  ">Fd_updatetime,</if>
+            <if test="fdRemarks != null  and fdRemarks != ''  ">Fd_remarks,</if>
+            <if test="fdReporYywdDeptId != null  ">Fd_Repor_yywd_dept_id,</if>
+            <if test="fdReporDelFlag != null  ">Fd_Repor_del_flag,</if>
+            <if test="fdVerify != null  and fdVerify != ''  ">Fd_verify,</if>
+            <if test="fdSpray != null  and fdSpray != ''  ">Fd_Spray,</if>
+            <if test="fdRelieve != null  and fdRelieve != ''  ">Fd_Relieve,</if>
+            <if test="fdManualRelieveDatetime != null  ">Fd_manual_Relieve_datetime,</if>
+            <if test="fdEstimateRelieveDatetime != null  ">Fd_Estimate_Relieve_datetime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fdReportId != null  ">#{fdReportId},</if>
+            <if test="fdReporNum != null  and fdReporNum != ''  ">#{fdReporNum},</if>
+            <if test="fdReporDatetime != null  ">#{fdReporDatetime},</if>
+            <if test="fdReporNo != null  ">#{fdReporNo},</if>
+            <if test="fdReporLicense != null  and fdReporLicense != ''  ">#{fdReporLicense},</if>
+            <if test="fdReporFz != null  and fdReporFz != ''  ">#{fdReporFz},</if>
+            <if test="fdReporDz != null  and fdReporDz != ''  ">#{fdReporDz},</if>
+            <if test="fdReporPl != null  ">#{fdReporPl},</if>
+            <if test="fdReporPDeptId != null  ">#{fdReporPDeptId},</if>
+            <if test="fdReporDeptId != null  ">#{fdReporDeptId},</if>
+            <if test="fdReporName != null  and fdReporName != ''  ">#{fdReporName},</if>
+            <if test="fdReporDjhd != null  and fdReporDjhd != ''  ">#{fdReporDjhd},</if>
+            <if test="fdReporCount != null  and fdReporCount != ''  ">#{fdReporCount},</if>
+            <if test="fdReporImpact != null  ">#{fdReporImpact},</if>
+            <if test="fdReporImage != null  and fdReporImage != ''  ">#{fdReporImage},</if>
+            <if test="fdCreatetime != null  ">#{fdCreatetime},</if>
+            <if test="fdUpdatetime != null  ">#{fdUpdatetime},</if>
+            <if test="fdRemarks != null  and fdRemarks != ''  ">#{fdRemarks},</if>
+            <if test="fdReporYywdDeptId != null  ">#{fdReporYywdDeptId},</if>
+            <if test="fdReporDelFlag != null  ">#{fdReporDelFlag},</if>
+            <if test="fdVerify != null  and fdVerify != ''  ">#{fdVerify},</if>
+            <if test="fdSpray != null  and fdSpray != ''  ">#{fdSpray},</if>
+            <if test="fdRelieve != null  and fdRelieve != ''  ">#{fdRelieve},</if>
+            <if test="fdManualRelieveDatetime != null  ">#{fdManualRelieveDatetime},</if>
+            <if test="fdEstimateRelieveDatetime != null  ">#{fdEstimateRelieveDatetime},</if>
+        </trim>
+    </insert>
+   <!-- <update id="updateFrozenCarReport" parameterType="FrozenCarReport">
+        update frozen_car_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fdReporName != null  and fdReporName != ''">fd_repor_name = #{fdReporName},</if>
+            <if test="fdReporDjhd != null  and fdReporDjhd != ''">fd_repor_djhd = #{fdReporDjhd},</if>
+            <if test="fdReporCount != null  and fdReporCount != ''">fd_repor_count = #{fdReporCount},</if>
+            <if test="fdReporImpact != null ">fd_repor_impact = #{fdReporImpact},</if>
+            <if test="fdReporImage != null  and fdReporImage != ''">fd_repor_image = #{fdReporImage},</if>
+            <if test="fdCreatetime != null ">fd_createtime = #{fdCreatetime},</if>
+            <if test="fdUpdatetime != null ">fd_updatetime = #{fdUpdatetime},</if>
+            <if test="fdRemarks != null  and fdRemarks != ''">fd_remarks = #{fdRemarks},</if>
+            <if test="fdReporYywdDeptId != null ">fd_repor_yywd_dept_id = #{fdReporYywdDeptId},</if>
+            <if test="fdReporDelFlag != null ">fd_repor_del_flag = #{fdReporDelFlag},</if>
+            <if test="fdVerify != null  and fdVerify != ''">fd_verify = #{fdVerify},</if>
+            <if test="fdSpray != null  and fdSpray != ''">fd_spray = #{fdSpray},</if>
+            <if test="fdRelieve != null  and fdRelieve != ''">fd_relieve = #{fdRelieve},</if>
+            <if test="fdManualRelieveDatetime != null ">fd_manual_relieve_datetime = #{fdManualRelieveDatetime},</if>
+            <if test="fdEstimateRelieveDatetime != null ">fd_estimate_relieve_datetime = #{fdEstimateRelieveDatetime},</if>
+            <if test="fdReportId != null ">fd_report_id = #{fdReportId},</if>
+            <if test="fdReporNum != null  and fdReporNum != ''">fd_repor_num = #{fdReporNum},</if>
+            <if test="fdReporDatetime != null ">fd_repor_datetime = #{fdReporDatetime},</if>
+            <if test="fdReporNo != null ">fd_repor_no = #{fdReporNo},</if>
+            <if test="fdReporLicense != null  and fdReporLicense != ''">fd_repor_license = #{fdReporLicense},</if>
+            <if test="fdReporFz != null  and fdReporFz != ''">fd_repor_fz = #{fdReporFz},</if>
+            <if test="fdReporDz != null  and fdReporDz != ''">fd_repor_dz = #{fdReporDz},</if>
+            <if test="fdReporPl != null ">fd_repor_pl = #{fdReporPl},</if>
+            <if test="fdReporPDeptId != null ">fd_repor_p_dept_id = #{fdReporPDeptId},</if>
+        </trim>
+        where fdReportId = #{fdReportId}
+    </update>-->
+    <update id="updateFrozenCarReport" parameterType="FrozenCarReport">
+        update Frozen_car_Report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fdReporNum != null  and fdReporNum != ''  ">Fd_Repor_num = #{fdReporNum},</if>
+            <if test="fdReporDatetime != null  ">Fd_Repor_datetime = #{fdReporDatetime},</if>
+            <if test="fdReporNo != null  ">Fd_Repor_No = #{fdReporNo},</if>
+            <if test="fdReporLicense != null  and fdReporLicense != ''  ">Fd_Repor_License = #{fdReporLicense},</if>
+            <if test="fdReporFz != null  and fdReporFz != ''  ">Fd_Repor_fz = #{fdReporFz},</if>
+            <if test="fdReporDz != null  and fdReporDz != ''  ">Fd_Repor_dz = #{fdReporDz},</if>
+            <if test="fdReporPl != null  ">Fd_Repor_pl = #{fdReporPl},</if>
+            <if test="fdReporPDeptId != null  ">Fd_Repor_p_dept_id = #{fdReporPDeptId},</if>
+            <if test="fdReporDeptId != null  ">Fd_Repor_dept_id = #{fdReporDeptId},</if>
+            <if test="fdReporName != null  and fdReporName != ''  ">Fd_Repor_name = #{fdReporName},</if>
+            <if test="fdReporDjhd != null  and fdReporDjhd != ''  ">Fd_Repor_djhd = #{fdReporDjhd},</if>
+            <if test="fdReporCount != null  and fdReporCount != ''  ">Fd_Repor_count = #{fdReporCount},</if>
+            <if test="fdReporImpact != null  ">Fd_Repor_Impact = #{fdReporImpact},</if>
+            <if test="fdReporImage != null  and fdReporImage != ''  ">Fd_Repor_image = #{fdReporImage},</if>
+            <if test="fdCreatetime != null  ">Fd_createtime = #{fdCreatetime},</if>
+<!--
+            <if test="fdUpdatetime != null  ">Fd_updatetime = #{fdUpdatetime},</if>
+-->
+            <if test="fdRemarks != null  and fdRemarks != ''  ">Fd_remarks = #{fdRemarks},</if>
+            <if test="fdReporYywdDeptId != null  ">Fd_Repor_yywd_dept_id = #{fdReporYywdDeptId},</if>
+            <if test="fdReporDelFlag != null  ">Fd_Repor_del_flag = #{fdReporDelFlag},</if>
+            <if test="fdVerify != null  and fdVerify != ''  ">Fd_verify = #{fdVerify},</if>
+            <if test="fdSpray != null  and fdSpray != ''  ">Fd_Spray = #{fdSpray},</if>
+            <if test="fdRelieve != null  and fdRelieve != ''  ">Fd_Relieve = #{fdRelieve},</if>
+            <if test="fdManualRelieveDatetime != null  ">Fd_manual_Relieve_datetime = #{fdManualRelieveDatetime},</if>
+            <if test="fdEstimateRelieveDatetime != null  ">Fd_Estimate_Relieve_datetime = #{fdEstimateRelieveDatetime}</if>
+            Fd_updatetime = sysdate
+        </trim>
+        where fd_report_id = #{fdReportId}
+    </update>
+
+    <delete id="deleteFrozenCarReportById" parameterType="Integer">
+        delete from Frozen_car_Report where Fd_Report_id = #{fdReportId}
+    </delete>
+
+    <delete id="deleteFrozenCarReportByIds" parameterType="String">
+        delete from Frozen_car_Report where Fd_Report_id in
+        <foreach item="fdReportId" collection="array" open="(" separator="," close=")">
+            #{fdReportId}
+        </foreach>
+    </delete>
+
+</mapper>

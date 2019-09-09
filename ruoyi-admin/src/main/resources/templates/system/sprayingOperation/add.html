@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('新增装车喷洒作业')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-sprayingOperation-add">
+			<div class="form-group">
+				<label class="col-sm-3 control-label"><span style="color: red; ">*</span>装车点：</label>
+				<div class="col-sm-8">
+					<div class="input-group">
+						<input name="sprayLocation"  onclick="selectDeptTree()" id="treeName" type="text" placeholder="请选择归属部门" class="form-control" required>
+						<span class="input-group-addon"><i class="fa fa-search"></i></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">喷洒车数：</label>
+				<div class="col-sm-8">
+					<input id="sprayCarsCount" name="sprayCarsCount" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">喷洒总量：</label>
+				<div class="col-sm-8">
+					<input id="spraySum" name="spraySum" class="form-control" type="text" placeholder="单位：公斤">
+					<span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 喷洒总量=喷洒车数x60公斤；注：每车不能低于60公斤</span>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">喷洒人：</label>
+				<div class="col-sm-8">
+					<input id="sprayName" name="sprayName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">喷洒单位：</label>
+				<div class="col-sm-8">
+					<input id="sprayCompany" name="sprayCompany" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">喷洒时间： </label>
+				<div class="select-list col-sm-8">
+					<li class="select-date">
+						<input type="text" class="time-input" id="time" name="sprayDatetime"  placeholder="喷洒时间" >
+					</li>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">到站：</label>
+				<div class="col-sm-8">
+					<input id="sprayStation" name="sprayStation" class="form-control" type="text">
+					<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>注：只能录入系统中已有到站名称，不能随便录入。</span>
+				</div>
+
+			</div>
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">喷洒类型：</label>
+				<div class="col-sm-8">
+					<input id="sprayType" name="sprayType" class="form-control" type="text">
+				</div>
+			</div>-->
+			<div class="form-group">
+				<label class="col-sm-3 control-label">品类：</label>
+				<div class="col-sm-8">
+			<select name="sprayType" th:with="type=${@dict.getType('pslxing')}" style="width: 200px;height: 30px;border:groove">
+				<option value="0">请选择</option>
+				<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+			</select>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注：</label>
+				<div class="col-sm-8">
+					<input id="sprayRemarks" name="sprayRemarks" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var icon = "<i class='fa fa-times-circle'></i> ";
+		var prefix = ctx + "system/sprayingOperation"
+		$("#form-sprayingOperation-add").validate({
+			rules:{
+				sprayLocation:{
+					required:true,
+				},
+				sprayCarsCount:{
+					required:true,
+				},
+				spraySum:{
+					required:true,
+				},
+				sprayName:{
+					required:true,
+				},
+				sprayCompany:{
+					required:true,
+				},
+				sprayStation:{
+					required:true,
+				},
+
+				sprayDatetime:{
+					required:true,
+				},
+			},
+			messages:{
+				sprayLocation:icon+"装车点必须填",
+				cjWriterTime:icon+"请输入出货时间"
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+			      var count=$("#sprayCarsCount").val();//喷洒车数
+			      var sum=$("#spraySum").val();//喷洒总量
+				if(count*60>sum){
+					$.modal.alertWarning("喷洒总量不能低于"+count*60+"公斤");
+					return false;
+				}
+	            $.operate.save(prefix + "/add", $('#form-sprayingOperation-add').serialize());
+	        }
+	    }
+		layui.use('laydate', function() {
+			var laydate = layui.laydate;
+			laydate.render({
+				elem: '#time',
+				type: 'datetime'
+			});
+		});
+
+		/*用户管理-新增-选择部门树*/
+		function selectDeptTree() {
+			var treeId = $("#treeId").val();
+			var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+			var url = ctx + "system/dept/selectDeptTree/" + deptId;
+			var options = {
+				title: '选择部门',
+				width: "380",
+				url: url,
+				callBack: doSubmit
+			};
+			$.modal.openOptions(options);
+		}
+
+		function doSubmit(index, layero){
+			var tree = layero.find("iframe")[0].contentWindow.$._tree;
+			if ($.tree.notAllowParents(tree)) {
+				var body = layer.getChildFrame('body', index);
+				$("#treeId").val(body.find('#treeId').val());
+				$("#treeName").val(body.find('#treeName').val());
+				layer.close(index);
+			}
+		}
+	</script>
+</body>
+</html>

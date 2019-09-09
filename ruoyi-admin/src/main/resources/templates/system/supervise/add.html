@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('新增督办事项')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-supervise-add">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">督办标题：</label>
+				<div class="col-sm-8">
+					<input id="suTitle" name="suTitle" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">督办内容：</label>
+				<div class="col-sm-8">
+					<input id="suContent" name="suContent" class="form-control" type="text">
+				</div>
+			</div>
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">反馈结果：</label>
+				<div class="col-sm-8">
+					<input id="suResult" name="suResult" class="form-control" type="text">
+				</div>
+			</div>-->
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">创建人部门id：</label>
+				<div class="col-sm-8">
+					<input id="suCreatedeptId" name="suCreatedeptId" class="form-control" type="text">
+				</div>
+			</div>-->
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">创建人id：</label>
+				<div class="col-sm-8">
+					<input id="suCreatenameId" name="suCreatenameId" class="form-control" type="text">
+				</div>
+			</div>-->
+			<div class="form-group">
+				<label class="col-sm-3 control-label"><span style="color: red; ">*</span>接收方：</label>
+				<div class="col-sm-8">
+					<div class="input-group">
+						<input name="cjPalce"  onclick="selectDeptTree()" id="treeName" type="text" placeholder="请选择归属部门" class="form-control" required>
+						<!--<span class="input-group-addon"><i class="fa fa-search"></i></span>-->
+						<span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 货运处：全局请选择‘北京铁路局’只对各个货运中心</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">接收方：</label>
+				<div class="col-sm-8">
+					<input id="suAccept" name="suAccept" class="form-control" type="text">
+				</div>
+			</div>
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">接收方id：</label>
+				<div class="col-sm-8">
+					<input id="suAcceptDeptId" name="suAcceptDeptId" class="form-control" type="text">
+				</div>
+			</div>-->
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input id="suCreatetime" name="suCreatetime" class="form-control" type="text">
+				</div>
+			</div>-->
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">修改时间：</label>
+				<div class="col-sm-8">
+					<input id="suUpdatetime" name="suUpdatetime" class="form-control" type="text">
+				</div>
+			</div>-->
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">状态值 0，未读 1，已读：</label>
+				<div class="col-sm-8">
+					<input id="suStatus" name="suStatus" class="form-control" type="text">
+				</div>
+			</div>-->
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">督办文件：</label>
+				<div class="file-container" style="display:inline-block;position:relative;overflow: hidden;vertical-align:middle">
+					<button class="btn btn-success fileinput-button" type="button">上传</button>
+					<input type="file" id="file" name = "zzFilename" onchange="loadFile(this.files[0])" style="position:absolute;top:0;left:0;font-size:34px; opacity:0">
+					<span name="file" id="filename" style="vertical-align: middle">未上传文件</span>
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "system/supervise"
+		$("#form-supervise-add").validate({
+			rules:{
+				suTitle:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-supervise-add').serialize());
+	        }
+	    }
+		/*用户管理-新增-选择部门树*/
+		function selectDeptTree() {
+			var treeId = $("#treeId").val();
+			var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+			var url = ctx + "system/dept/selectDeptTree/" + deptId;
+			var options = {
+				title: '选择部门',
+				width: "380",
+				url: url,
+				callBack: doSubmit
+			};
+			$.modal.openOptions(options);
+		}
+
+		function doSubmit(index, layero){
+			var tree = layero.find("iframe")[0].contentWindow.$._tree;
+			if ($.tree.notAllowParents(tree)) {
+				var body = layer.getChildFrame('body', index);
+				$("#treeId").val(body.find('#treeId').val());
+				$("#treeName").val(body.find('#treeName').val());
+				layer.close(index);
+			}
+		}
+	</script>
+</body>
+</html>

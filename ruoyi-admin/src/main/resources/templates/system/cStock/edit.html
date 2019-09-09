@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改厂商销售库存')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-cStock-edit" th:object="${cStock}">
+            <input id="stockId" name="stockId" th:field="*{stockId}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">货运中心：</label>
+				<div class="col-sm-8">
+					<input id="stockHyzxDept" name="stockHyzxDept" th:field="*{stockHyzxDept}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">营业部：</label>
+				<div class="col-sm-8">
+					<input id="stockYybDept" name="stockYybDept" th:field="*{stockYybDept}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">营业网点：</label>
+				<div class="col-sm-8">
+					<input id="stockYywdDept" name="stockYywdDept" th:field="*{stockYywdDept}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">装车点id：</label>
+				<div class="col-sm-8">
+					<input id="stockPalceId" name="stockPalceId" th:field="*{stockPalceId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">装车点：</label>
+				<div class="col-sm-8">
+					<input id="stockPalce" name="stockPalce" th:field="*{stockPalce}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">剩余库存：</label>
+				<div class="col-sm-8">
+					<input id="stockSurplus" name="stockSurplus" th:field="*{stockSurplus}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建人：</label>
+				<div class="col-sm-8">
+					<input id="stockCreate" name="stockCreate" th:field="*{stockCreate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">用户所在部门：</label>
+				<div class="col-sm-8">
+					<input id="stockUserDeptId" name="stockUserDeptId" th:field="*{stockUserDeptId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input id="stockCreatetime" name="stockCreatetime" th:field="*{stockCreatetime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">修改时间：</label>
+				<div class="col-sm-8">
+					<input id="stockUpdatetime" name="stockUpdatetime" th:field="*{stockUpdatetime}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "system/cStock";
+		$("#form-cStock-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-cStock-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>
