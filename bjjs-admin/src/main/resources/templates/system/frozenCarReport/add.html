@@ -35,15 +35,9 @@
 			<div class="form-group">	
 				<label class="col-sm-3 control-label">发站：</label>
 				<div class="col-sm-8">
-					<input id="fdReporFz" name="fdReporFz" class="form-control" type="text">
+					<input id="fdReporFz" name="fdReporFz" class="form-control" type="text" required>
 				</div>
 			</div>
-			<!--<div class="form-group">
-				<label class="col-sm-3 control-label">到站：</label>
-				<div class="col-sm-8">
-					<input id="fdReporDz" name="fdReporDz" class="form-control" type="text">
-				</div>
-			</div>-->
 			<div class="form-group">
 				<label class="col-sm-3 control-label">品类：</label>
 				<div class="col-sm-8">
@@ -95,7 +89,24 @@
 		var icon = "<i class='fa fa-times-circle'></i> ";
 		$("#form-frozenCarReport-add").validate({
 			rules:{
-				fdRepornum:{
+				fdReporFz:{
+						minlength: 2,
+						maxlength: 20,
+						remote: {
+							url: prefix + "/checkDeptNameUnique",
+							type: "post",
+							dataType: "json",
+							data: {
+								deptName : function() {
+									return $.common.trim($("#fdReporFz").val());
+								}
+							},
+							dataFilter: function(data, type) {
+								return $.validate.uniqueDept(data);
+							}
+						}
+				},
+				fdReporNum:{
 					required:true,
 				},
 				fdReporDatetime:{
@@ -105,9 +116,6 @@
 					required:true,
 				},
 				fdReporLicense:{
-					required:true,
-				},
-				fdReporFz:{
 					required:true,
 				},
 				fdReporPl:{
@@ -127,9 +135,12 @@
 				},
 			},
 			messages:{
+				"fdReporFz": {
+					remote: "站点不存在,请重新输入"
+				},
 				fdRepornum:icon+"车次不能为空",
 				fdReporDatetime:icon+"达到时间不能为空",
-				fdReporFz:icon+"发站不能为空"
+				/*fdReporFz:icon+"发站不能为空"*/
 			},
 			focusCleanup: true
 		});
@@ -142,7 +153,24 @@
 		});
 		function submitHandler() {
 	        if ($.validate.form()) {
-	            $.operate.save(prefix + "/add", $('#form-frozenCarReport-add').serialize());
+				$.operate.save(prefix + "/add", $('#form-frozenCarReport-add').serialize());
+
+				/*$.ajax({
+					url:prefix+"/checkDeptNameUnique",
+					type:"POST",
+					dataType:"JSON",
+					data:{
+						deptName:$("#fdReporFz").val()
+					},
+					success:function (result) {
+					    var count =JSON.stringify(result)
+						if(count!=0){
+						}else if (count ==0){
+							return $.modal.alertError("没有对应的车站，请重新输入")
+						}
+					}
+				})*/
+
 	        }
 	    }
 	</script>

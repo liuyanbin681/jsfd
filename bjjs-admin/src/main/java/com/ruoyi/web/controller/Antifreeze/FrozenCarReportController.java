@@ -288,4 +288,16 @@ public class FrozenCarReportController extends BaseController
 		return "/system/VerifyCarReport/verify2";
 	}
 
+	/**
+	 * 验证部门是否唯一
+	 * @param deptName deptName
+	 * @return
+	 */
+	@PostMapping("checkDeptNameUnique")
+	@ResponseBody
+	public String checkDeptUnique(String deptName){
+logger.info("获取的部门"+deptName);
+		return iSysDeptService.checkDeptUnique(deptName);
+	}
+
 }

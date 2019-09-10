@@ -2,6 +2,8 @@ package com.ruoyi.system.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.ruoyi.common.constant.DeptConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -277,6 +279,21 @@ public class SysDeptServiceImpl implements ISysDeptService
     @Override
     public SysDept selectDeptByName(String deptName) {
         return deptMapper.selectDeptByName(deptName);
+    }
+    /**
+     * 验证部门是否存在
+     * @param deptName 部门名称
+     * @return 0代表不存在，1存在
+     */
+    @Override
+    public String checkDeptUnique(String deptName) {
+        int count = deptMapper.checkDeptUnique(deptName);
+        if (count>0){
+            return DeptConstants.DEPT_NAME_NOT_UNIQUE;
+        }else{
+            return DeptConstants.DEPT_NAME_UNIQUE;
+        }
+
     }
 
 }

@@ -97,4 +97,10 @@ public interface ISysDeptService
      * @return 部门信息
      */
     public SysDept selectDeptByName(String deptName);
+    /**
+     * 验证部门是否存在
+     * @param deptName 部门名称
+     * @return 0代表不存在，1存在
+     */
+    public String checkDeptUnique(String deptName);
 }

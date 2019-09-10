@@ -110,4 +110,11 @@ public interface SysDeptMapper
      * @return 部门列表
      */
     public List<SysDept> selectChildrenDeptById(Long deptId);
+
+    /**
+     * 验证部门是否存在
+     * @param deptName 部门名称
+     * @return 0代表不存在，1存在
+     */
+    public int checkDeptUnique(String deptName);
 }

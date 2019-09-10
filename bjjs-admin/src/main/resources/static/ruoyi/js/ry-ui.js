@@ -1060,6 +1060,14 @@
                 }
                 return false;
             },
+			//判断是否存在车站
+			// 判断返回标识是否唯一 false 不存在 true 存在
+			uniqueDept: function (value) {
+				if (value == "1") {
+					return true;
+				}
+				return false;
+			},
             // 表单验证
             form: function (formId) {
             	var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
@@ -1207,10 +1215,10 @@
                     return false;
 				}
     		    for (var i = 0; i < nodes.length; i++) {
-    		        if (nodes[i].level == 0) {
+    		      /*  if (nodes[i].level == 0) {
     		            $.modal.msgError("不能选择根节点（" + nodes[i].name + "）");
     		            return false;
-    		        }
+    		        }*/
     		        if (nodes[i].isParent) {
     		            $.modal.msgError("不能选择父节点（" + nodes[i].name + "）");
     		            return false;
